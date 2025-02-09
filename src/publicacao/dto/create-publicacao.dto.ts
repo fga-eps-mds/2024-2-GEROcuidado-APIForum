@@ -21,7 +21,7 @@ export class CreatePublicacaoDto {
   titulo!: string;
 
   @IsString()
-  @MaxLength(500)
+  @MaxLength(1500)
   @IsNotEmpty()
   descricao!: string;
 

@@ -17,6 +17,7 @@ export class ComentariosController {
   @Post('comentario')
   async create(@Body() body: CreateComentarioDto): Promise<Comentario> {
     try {
+      console.log(body);
       return await this.comentariosService.create(body);
     } catch (error) {
       if (error instanceof Error) {

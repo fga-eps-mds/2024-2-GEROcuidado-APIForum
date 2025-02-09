@@ -10,6 +10,9 @@ import { CreateComentarioDto } from './dto/create-comentario.dto';
 import { UpdateComentarioDto } from './dto/update-comentario.dto';
 import { Comentario } from './entities/comentario.entity';
 import {
+  IPublicacaoFilter
+} from './interface/publicacao-filter.interface';
+import {
   IUsuario,
 } from './interface/publicacao-usuario.interface';
 
@@ -22,9 +25,13 @@ export class ComentariosService {
   ) { }
 
   async create(createComentarioDto: CreateComentarioDto): Promise<Comentario> {
-    const comentario = this.comentarioRepository.create(createComentarioDto);
+    const comentario = this.comentarioRepository.create({
+      ...createComentarioDto,
+    });
+
     return await this.comentarioRepository.save(comentario);
   }
+
 
   async findAll(
     ordering: Ordering,
@@ -38,6 +45,7 @@ export class ComentariosService {
     const [result, total] = await this.comentarioRepository
       .createQueryBuilder('comentario')
       .leftJoinAndSelect('comentario.publicacao', 'publicacao')
+      .leftJoinAndSelect('comentario.usuario', 'usuario') // Adicionado usuario
       .limit(limit)
       .offset(offset)
       .orderBy(`"${sort}"`, order)
@@ -52,7 +60,8 @@ export class ComentariosService {
 
   async findOne(id: number): Promise<Comentario> {
     const comentario = await this.comentarioRepository.findOneOrFail({
-      where: { id }
+      where: { id },
+      relations: ['publicacao', 'usuario'] // Aqui garantimos que a publicacao será carregada
     });
 
     const request = this.clientProxy
@@ -63,7 +72,7 @@ export class ComentariosService {
     if (!comentario) {
       throw new NotFoundException(`Comentário com ID ${id} não encontrado`);
     }
-    const comentarioWithUsuario = { ...comentario, usuario } as Comentario & { usuario: IUsuario };
+    const comentarioWithUsuario = { ...comentario, usuario, publicacao: comentario.publicacao } as Comentario & { usuario: IUsuario } & { publicacao: IPublicacaoFilter };
     return comentarioWithUsuario;
   }
 

@@ -1,15 +1,15 @@
 import {
-    Column,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { CreateComentarioDto } from '../dto/create-comentario.dto';
 import { UpdateComentarioDto } from '../dto/update-comentario.dto';
 import { Publicacao } from './publicacao.entity';
 
-  @Entity({ name: 'comentario' })
+@Entity({ name: 'comentario' })
 export class Comentario {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -23,14 +23,19 @@ export class Comentario {
   @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
   dataHora!: Date;
 
-  @ManyToOne(() => Publicacao, (publicacao) => publicacao.comentarios, { 
+  @ManyToOne(() => Publicacao, (publicacao) => publicacao.comentarios, {
     eager: true,
-    onDelete: 'CASCADE', 
-})
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   publicacao!: Publicacao;
 
-  constructor(createComentarioDto: CreateComentarioDto | UpdateComentarioDto) {
+  constructor(createComentarioDto: CreateComentarioDto | UpdateComentarioDto,
+    publicacao?: Publicacao
+  ) {
     Object.assign(this, createComentarioDto);
+    if (publicacao) {
+      this.publicacao = publicacao;
+    }
   }
 }
