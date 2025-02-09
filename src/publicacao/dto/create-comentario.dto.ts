@@ -1,7 +1,7 @@
 import { IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateComentarioDto {
-    @IsNotEmpty()
+  @IsNotEmpty()
   @IsNumber()
   idUsuario!: number;
 
@@ -15,6 +15,6 @@ export class CreateComentarioDto {
 
   @IsNotEmpty()
   @IsNumber()
-  comentarioId!: number;
+  publicacaoId!: number;
 
 }
