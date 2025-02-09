@@ -71,11 +71,11 @@ export class ComentariosService {
       where: { id },
     });
 
-    const publicacao = await this.comentarioRepository.manager.findOne(Publicacao, { where: { id: comentario.publicacao.id } });
+    //const publicacao = await this.comentarioRepository.manager.findOne(Publicacao, { where: { id: comentario.publicacao.id } });
 
-    if (!publicacao) {
-      throw new NotFoundException(`Publicação com ID ${id} não encontrada`);
-    }
+    //if (!publicacao) {
+    //throw new NotFoundException(`Publicação com ID ${id} não encontrada`);
+    //}
 
     const request = this.clientProxy
       .send({ role: 'info', cmd: 'get' }, { id: comentario.idUsuario })
@@ -85,7 +85,7 @@ export class ComentariosService {
     if (!comentario) {
       throw new NotFoundException(`Comentário com ID ${id} não encontrado`);
     }
-    const comentarioWithUsuario = { ...comentario, usuario, publicacao } as Comentario & { usuario: IUsuario };
+    const comentarioWithUsuario = { ...comentario, usuario } as Comentario & { usuario: IUsuario };
     return comentarioWithUsuario;
   }
 
