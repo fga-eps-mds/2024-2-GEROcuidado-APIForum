@@ -54,7 +54,7 @@ export class ComentariosService {
       .leftJoinAndSelect('comentario.publicacao', 'publicacao')
       .limit(limit)
       .offset(offset)
-      .orderBy(`"comentario.id`, order)
+      .orderBy('publicacao.id', order)
       .getManyAndCount();
 
     const comentariosComUsuarios = await Promise.all(
