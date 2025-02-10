@@ -1,13 +1,10 @@
 import {
   Column,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 import { CreateDenunciaDto } from '../dto/create-denuncia.dto';
 import { UpdateDenunciaDto } from '../dto/update-denuncia.dto';
-import { Publicacao } from './publicacao.entity';
 
 @Entity({ name: 'denuncia' })
 export class Denuncia {
@@ -26,12 +23,12 @@ export class Denuncia {
   @Column('timestamp')
   dataHora!: Date;
 
-  @ManyToOne(() => Publicacao, (publicacao) => publicacao.denuncias, {
-    eager: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn()
-  publicacao!: Publicacao;
+  //@ManyToOne(() => Publicacao, (publicacao) => publicacao.denuncias, {
+  //  eager: true,
+  // onDelete: 'CASCADE',
+  //})
+  //@JoinColumn()
+  //publicacao!: Publicacao;
 
   constructor(createDenunciaDto: CreateDenunciaDto | UpdateDenunciaDto) {
     Object.assign(this, createDenunciaDto);

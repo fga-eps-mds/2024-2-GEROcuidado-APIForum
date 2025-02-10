@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Denuncia } from './entities/denuncia.entity';
+import { Publicacao } from "../publicacao/entities/publicacao.entity";
+import { PublicacaoModule } from "../publicacao/publicacao.module";
+import { PublicacaoService } from "../publicacao/publicacao.service";
 import { DenunciaController } from './denuncia.controller';
 import { DenunciaService } from './denuncia.service';
-import {PublicacaoService} from "../publicacao/publicacao.service";
-import {Publicacao} from "../publicacao/entities/publicacao.entity";
-import {PublicacaoModule} from "../publicacao/publicacao.module";
+import { Denuncia } from './entities/denuncia.entity';
 
 @Module({
   imports: [
@@ -16,5 +16,5 @@ import {PublicacaoModule} from "../publicacao/publicacao.module";
   controllers: [DenunciaController],
   providers: [DenunciaService, Repository, PublicacaoService],
   exports: [DenunciaService],
-})
-export class DenunciaModule {}
+ })
+ export class DenunciaModule {}

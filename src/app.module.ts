@@ -4,8 +4,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AutenticacaoGuard } from './autenticacao.guard';
-import { DenunciaModule } from './publicacao/denuncia.module';
+import { ComentariosModule } from './publicacao/comentario.module';
+//import { DenunciaModule } from './publicacao/denuncia.module';
 import { PublicacaoModule } from './publicacao/publicacao.module';
+;
 
 const ENV = process.env.NODE_ENV;
 
@@ -17,7 +19,7 @@ const ENV = process.env.NODE_ENV;
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService : ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get('DB_HOST') || 'gerocuidado-forum-db',
         port: configService.get('DB_PORT'),
@@ -45,8 +47,8 @@ const ENV = process.env.NODE_ENV;
       },
     ]),
     PublicacaoModule,
-    DenunciaModule,
-
+    //DenunciaModule,
+    ComentariosModule,
   ],
   controllers: [],
   providers: [

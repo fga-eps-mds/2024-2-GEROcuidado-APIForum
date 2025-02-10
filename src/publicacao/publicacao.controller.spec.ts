@@ -28,6 +28,7 @@ describe('PublicacaoController', () => {
     ...publiDto,
     id: 1,
     idUsuarioReporte: [],
+    comentarios: [],
   };
 
   const publiUsuario = {

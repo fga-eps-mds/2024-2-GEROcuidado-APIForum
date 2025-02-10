@@ -3,8 +3,8 @@ import { Publicacao } from './publicacao/entities/publicacao.entity'; // Caminho
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  host: 'localhost', // Host correto do banco de dados
-  port: 5002,
+  host: 'gerocuidado-forum-db', // Nome do serviço no Docker Compose
+  port: 5002, // Porta interna do PostgreSQL
   username: 'postgres', // Usuário do banco de dados
   password: 'postgres', // Senha do banco de dados
   database: 'gerocuidado-forum-db', // Nome do banco
