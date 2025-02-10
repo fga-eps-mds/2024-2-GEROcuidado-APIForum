@@ -47,20 +47,28 @@ export class ComentariosService {
   ): Promise<ResponsePaginate<Comentario[]>> {
     const limit = paging.limit;
     const offset = paging.offset;
-    const sort = ordering.column;
     const order = ordering.dir.toUpperCase() as 'ASC' | 'DESC';
 
     const [result, total] = await this.comentarioRepository
       .createQueryBuilder('comentario')
       .leftJoinAndSelect('comentario.publicacao', 'publicacao')
-      .leftJoinAndSelect('comentario.usuario', 'usuario') // Adicionado usuario
       .limit(limit)
       .offset(offset)
-      .orderBy(`"${sort}"`, order)
+      .orderBy(`"comentario.id`, order)
       .getManyAndCount();
 
+    const comentariosComUsuarios = await Promise.all(
+      result.map(async (comentario) => {
+        const request = this.clientProxy
+          .send({ role: 'info', cmd: 'get' }, { id: comentario.idUsuario })
+          .pipe(timeout(5000));
+        const usuario = await lastValueFrom(request);
+        return { ...comentario, usuario };
+      })
+    );
+
     return {
-      data: result,
+      data: comentariosComUsuarios,
       count: +total,
       pageSize: +limit,
     };
