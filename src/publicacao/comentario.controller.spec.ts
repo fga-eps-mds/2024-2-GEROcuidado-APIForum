@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Ordering } from '../shared/decorators/ordenate.decorator';
 import { Pagination } from '../shared/decorators/paginate.decorator';
@@ -58,7 +58,7 @@ describe('ComentariosController', () => {
         conteudo: 'Comentário de teste',
         idUsuario: 1,
         dataHora: new Date().toISOString(),
-        comentarioId: 1,
+        publicacaoId: 1,
       };
 
       const result = await controller.create(createComentarioDto);
@@ -72,16 +72,27 @@ describe('ComentariosController', () => {
         conteudo: 'Comentário de teste',
         idUsuario: 1,
         dataHora: new Date().toISOString(),
-        comentarioId: 1,
+        publicacaoId: 1,
       };
 
-      jest
-        .spyOn(service, 'create')
-        .mockRejectedValue(new Error('Erro ao criar comentário'));
+      jest.spyOn(service, 'create').mockRejectedValue(new Error('Erro ao criar comentário'));
 
-      await expect(controller.create(createComentarioDto)).rejects.toThrowError(
-        BadRequestException,
-      );
+      await expect(controller.create(createComentarioDto)).rejects.toThrowError(BadRequestException);
+    });
+
+    it('deve lançar uma BadRequestException em caso de erro desconhecido', async () => {
+      const createComentarioDto: CreateComentarioDto = {
+        conteudo: 'Comentário de teste',
+        idUsuario: 1,
+        dataHora: new Date().toISOString(),
+        publicacaoId: 1,
+      };
+
+      jest.spyOn(service, 'create').mockImplementation(() => {
+        throw new Error('Erro desconhecido');
+      });
+
+      await expect(controller.create(createComentarioDto)).rejects.toThrowError(BadRequestException);
     });
   });
 
@@ -112,13 +123,9 @@ describe('ComentariosController', () => {
         getLimit: () => 10,
       };
 
-      jest
-        .spyOn(service, 'findAll')
-        .mockRejectedValue(new Error('Erro ao buscar comentários'));
+      jest.spyOn(service, 'findAll').mockRejectedValue(new Error('Erro ao buscar comentários'));
 
-      await expect(controller.findAll(paging, ordering)).rejects.toThrowError(
-        Error,
-      );
+      await expect(controller.findAll(paging, ordering)).rejects.toThrowError(Error);
     });
   });
 
@@ -131,11 +138,15 @@ describe('ComentariosController', () => {
     });
 
     it('deve lançar uma exceção em caso de erro no serviço', async () => {
-      jest
-        .spyOn(service, 'findOne')
-        .mockRejectedValue(new Error('Erro ao buscar comentário'));
+      jest.spyOn(service, 'findOne').mockRejectedValue(new Error('Erro ao buscar comentário'));
 
       await expect(controller.findOne('1')).rejects.toThrowError(Error);
+    });
+
+    it('deve lançar NotFoundException se o comentário não for encontrado', async () => {
+      jest.spyOn(service, 'findOne').mockRejectedValue(new NotFoundException('Comentário não encontrado'));
+
+      await expect(controller.findOne('999')).rejects.toThrowError(NotFoundException);
     });
   });
 
@@ -156,13 +167,19 @@ describe('ComentariosController', () => {
         conteudo: 'Comentário atualizado',
       };
 
-      jest
-        .spyOn(service, 'update')
-        .mockRejectedValue(new Error('Erro ao atualizar comentário'));
+      jest.spyOn(service, 'update').mockRejectedValue(new Error('Erro ao atualizar comentário'));
 
-      await expect(
-        controller.update('1', updateComentarioDto),
-      ).rejects.toThrowError(Error);
+      await expect(controller.update('1', updateComentarioDto)).rejects.toThrowError(Error);
+    });
+
+    it('deve lançar NotFoundException se o comentário não for encontrado para atualização', async () => {
+      const updateComentarioDto: UpdateComentarioDto = {
+        conteudo: 'Comentário atualizado',
+      };
+
+      jest.spyOn(service, 'update').mockRejectedValue(new NotFoundException('Comentário não encontrado'));
+
+      await expect(controller.update('999', updateComentarioDto)).rejects.toThrowError(NotFoundException);
     });
   });
 
@@ -174,11 +191,15 @@ describe('ComentariosController', () => {
     });
 
     it('deve lançar uma exceção em caso de erro no serviço', async () => {
-      jest
-        .spyOn(service, 'remove')
-        .mockRejectedValue(new Error('Erro ao remover comentário'));
+      jest.spyOn(service, 'remove').mockRejectedValue(new Error('Erro ao remover comentário'));
 
       await expect(controller.remove('1')).rejects.toThrowError(Error);
+    });
+
+    it('deve lançar NotFoundException se o comentário não for encontrado para remoção', async () => {
+      jest.spyOn(service, 'remove').mockRejectedValue(new NotFoundException('Comentário não encontrado'));
+
+      await expect(controller.remove('999')).rejects.toThrowError(NotFoundException);
     });
   });
 });
