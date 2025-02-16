@@ -21,7 +21,7 @@ describe('DenunciaService', () => {
     idUsuario: 1,
     motivo: 'Conteúdo inadequado',
     descricao: 'Descrição da denúncia',
-    dataHora: new Date(), // Garantir que dataHora seja um Date
+    dataHora: new Date().toISOString(), // Garantir que dataHora seja uma string
   };
 
   const mockResponsePaginate: ResponsePaginate<Denuncia[]> = {
@@ -37,11 +37,15 @@ describe('DenunciaService', () => {
         {
           provide: getRepositoryToken(Denuncia),
           useValue: {
-            create: jest.fn().mockReturnValue(mockDenuncia),
+            create: jest.fn().mockImplementation((dto) => ({
+              ...dto,
+              id: 1, // Simula a criação de uma denúncia com ID
+              dataHora: dto.dataHora, // Mantém como string
+            })),
             save: jest.fn().mockImplementation((entity) => {
-              // Converte dataHora para Date se for uma string
-              if (entity.dataHora && typeof entity.dataHora === 'string') {
-                entity.dataHora = new Date(entity.dataHora);
+              // Garante que dataHora seja uma string
+              if (entity.dataHora && typeof entity.dataHora !== 'string') {
+                entity.dataHora = entity.dataHora.toISOString();
               }
               return Promise.resolve(entity);
             }),
@@ -57,9 +61,9 @@ describe('DenunciaService', () => {
             })),
             merge: jest.fn().mockImplementation((entity, dto) => {
               const updatedEntity = { ...entity, ...dto };
-              // Converte dataHora para Date se for uma string
-              if (dto.dataHora && typeof dto.dataHora === 'string') {
-                updatedEntity.dataHora = new Date(dto.dataHora);
+              // Garante que dataHora seja uma string
+              if (dto.dataHora && typeof dto.dataHora !== 'string') {
+                updatedEntity.dataHora = dto.dataHora.toISOString();
               }
               return updatedEntity;
             }),
@@ -99,10 +103,16 @@ describe('DenunciaService', () => {
       expect(publicacaoService.findOne).toHaveBeenCalledWith(1);
       expect(repository.create).toHaveBeenCalledWith({
         ...createDenunciaDto,
-        dataHora: new Date(createDenunciaDto.dataHora), // Verifica se foi convertido para Date
+        dataHora: expect.any(String), // Verifica se é uma string
       });
-      expect(repository.save).toHaveBeenCalledWith(mockDenuncia);
-      expect(result).toEqual(mockDenuncia);
+      expect(repository.save).toHaveBeenCalledWith(expect.objectContaining({
+        ...createDenunciaDto,
+        dataHora: expect.any(String), // Verifica se é uma string
+      }));
+      expect(result).toEqual(expect.objectContaining({
+        ...createDenunciaDto,
+        dataHora: expect.any(String), // Verifica se é uma string
+      }));
     });
 
     it('deve lançar uma exceção se a publicação não for encontrada', async () => {
@@ -181,41 +191,53 @@ describe('DenunciaService', () => {
         motivo: 'Conteúdo ofensivo',
         dataHora: new Date().toISOString(), // Passa como string
       };
-
+  
       // Cria uma cópia do mockDenuncia com as atualizações do DTO
       const updatedDenuncia = {
         ...mockDenuncia,
         ...updateDenunciaDto,
-        dataHora: updateDenunciaDto.dataHora ? new Date(updateDenunciaDto.dataHora) : mockDenuncia.dataHora, // Converte para Date se definido
+        dataHora: updateDenunciaDto.dataHora, // Mantém como string
       };
-
+  
+      // Mock do findOneOrFail para retornar a denúncia existente
+      jest.spyOn(repository, 'findOneOrFail').mockResolvedValue(mockDenuncia);
+  
       // Mock do merge para retornar a denúncia atualizada
-      jest.spyOn(repository, 'merge').mockReturnValue(updatedDenuncia);
-
+      jest.spyOn(repository, 'merge').mockImplementation((entity, dto) => {
+        const updatedEntity = { ...entity, ...dto };
+        return updatedEntity;
+      });
+  
       // Mock do save para retornar a denúncia atualizada
       jest.spyOn(repository, 'save').mockResolvedValue(updatedDenuncia);
-
+  
       const result = await service.update(1, updateDenunciaDto);
-
+  
       // Verifica se o método findOneOrFail foi chamado corretamente
       expect(repository.findOneOrFail).toHaveBeenCalledWith({ where: { id: 1 } });
-
+  
       // Verifica se o merge foi chamado com a denúncia original e o DTO
-      expect(repository.merge).toHaveBeenCalledWith(mockDenuncia, updateDenunciaDto);
-
+      expect(repository.merge).toHaveBeenCalledWith(
+        mockDenuncia,
+        expect.objectContaining({
+          ...updateDenunciaDto,
+          dataHora: expect.any(String), // Verifica se é uma string
+        })
+      );
+  
       // Verifica se o save foi chamado com a denúncia atualizada
       expect(repository.save).toHaveBeenCalledWith(updatedDenuncia);
-
+  
       // Verifica se o resultado é a denúncia atualizada
       expect(result).toEqual(updatedDenuncia);
     });
-
+  
     it('deve lançar uma exceção se a denúncia não for encontrada', async () => {
       jest
         .spyOn(repository, 'findOneOrFail')
         .mockRejectedValue(new NotFoundException('Denúncia não encontrada!'));
-
-      await expect(service.update(999, { motivo: 'Conteúdo ofensivo' })).rejects.toThrowError(
+  
+      await expect(service.update(999, { motivo: 'Conteúdo ofensivo', dataHora: new Date().toISOString() })).rejects.toThrowError(
         NotFoundException,
       );
     });

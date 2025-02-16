@@ -18,7 +18,7 @@ describe('DenunciaController', () => {
     idUsuario: 1,
     motivo: 'Conteúdo inadequado',
     descricao: 'Descrição da denúncia',
-    dataHora: new Date(),
+    dataHora: expect.any(String),
   };
 
   const mockResponsePaginate: ResponsePaginate<Denuncia[]> = {

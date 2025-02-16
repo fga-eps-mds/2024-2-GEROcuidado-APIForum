@@ -9,7 +9,6 @@ import { CreateDenunciaDto } from "./dto/create-denuncia.dto";
 import { UpdateDenunciaDto } from "./dto/update-denuncia.dto";
 import { Denuncia } from './entities/denuncia.entity';
 
-
 @Injectable()
 export class DenunciaService {
   constructor(
@@ -25,7 +24,6 @@ export class DenunciaService {
    * @param body Dados da denúncia.
    */
   async create(body: CreateDenunciaDto): Promise<Denuncia> {
-
     const publicacao = await this._publicacaoService.findOne(body.publicacaoId);
 
     if (!publicacao) {
@@ -34,12 +32,11 @@ export class DenunciaService {
 
     const denuncia = this._repository.create({
       ...body,
-      //publicacao,
+      dataHora: body.dataHora, // Mantém como string
     });
 
     return this._repository.save(denuncia);
   }
-
 
   /**
    * Obtém uma lista paginada de denúncias com base em critérios de ordenação e paginação.
@@ -64,14 +61,12 @@ export class DenunciaService {
       .orderBy(`"${sort}"`, order)
       .getManyAndCount();
 
-
     return {
       data: result,
       count: +total,
       pageSize: +limit,
     };
   }
-
 
   /**
    * Busca uma denúncia específica pelo ID.
@@ -82,21 +77,20 @@ export class DenunciaService {
   }
 
   /**
-   * Busca todas as denúncias de uma publicação.
-   * @param publicacaoId ID da publicação.
-   */
-//   async findByPublicacaoId(publicacaoId: number): Promise<Denuncia[]> {
-//     return this._repository.find({ where: { publicacaoId: publicacaoId } });
-//   }
-
-  /**
    * Atualiza os detalhes de uma denúncia.
    * @param id ID da denúncia.
    * @param body Dados da atualização.
    */
   async update(id: number, body: UpdateDenunciaDto): Promise<Denuncia> {
     const denuncia = await this._repository.findOneOrFail({ where: { id } });
-    const updated = Object.assign(denuncia, body);
+
+    // Cria um objeto de atualização mantendo dataHora como string
+    const updateData: Partial<Denuncia> = {
+      ...body,
+      dataHora: body.dataHora, // Mantém como string
+    };
+
+    const updated = Object.assign(denuncia, updateData);
     return this._repository.save(updated);
   }
 
