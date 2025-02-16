@@ -155,7 +155,7 @@ describe('E2E - Publicacao', () => {
       expect(res.body.data).toBeNull();
     });
   });
-  
+
   describe('GET - /api/forum/:id', () => {
     it('should successfully get "publicacao" by id', async () => {
       // Cria uma publicação antes de buscar
@@ -218,41 +218,43 @@ describe('E2E - Publicacao', () => {
     });
   });  
 
-  describe('GET - /api/forum/', () => {
-    it('should successfully findAll "publicacao" empty', async () => {
-      const filter = JSON.stringify({
-        isReported: true,
-      });
-
-      const res = await request(app.getHttpServer())
-        .get('?filter=' + filter)
-        .set('Content-Type', 'application/json')
-        .set('Authorization', 'bearer ' + token)
-        .send();
-
-      expect(res.statusCode).toEqual(200);
-      expect(res.body.message).toBeNull();
-      expect(res.body.data.length).toEqual(0);
+describe('GET - /api/forum/', () => {
+  it('should successfully findAll "publicacao" empty', async () => {
+    const filter = JSON.stringify({
+      isReported: true,
     });
 
-    it('should successfully findAll "publicacao"', async () => {
-      const filter = JSON.stringify({
-        categoria: publicacao.categoria,
-        titulo: publicacao.titulo,
-        id: publicacao.id,
-      });
+    // Correção: Adicione o caminho "/api/forum" antes dos query params
+    const res = await request(app.getHttpServer())
+      .get(`/api/forum?filter=${filter}`) // URL corrigida
+      .set('Content-Type', 'application/json')
+      .set('Authorization', 'bearer ' + token)
+      .send();
 
-      const res = await request(app.getHttpServer())
-        .get('?filter=' + filter)
-        .set('Content-Type', 'application/json')
-        .set('Authorization', 'bearer ' + token)
-        .send();
-
-      expect(res.statusCode).toEqual(200);
-      expect(res.body.message).toBeNull();
-      expect(res.body.data.length).toEqual(1);
-    });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toBeNull();
+    expect(res.body.data.length).toEqual(0); // Espera uma lista vazia
   });
+
+  it('should successfully findAll "publicacao"', async () => {
+    const filter = JSON.stringify({
+      categoria: publicacao.categoria,
+      titulo: publicacao.titulo,
+      id: publicacao.id,
+    });
+
+    // Correção: Adicione o caminho "/api/forum" antes dos query params
+    const res = await request(app.getHttpServer())
+      .get(`/api/forum?filter=${filter}`) // URL corrigida
+      .set('Content-Type', 'application/json')
+      .set('Authorization', 'bearer ' + token)
+      .send();
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toBeNull();
+    expect(res.body.data.length).toEqual(1); // Espera uma lista com 1 item
+  });
+});
 
   describe('PATCH - /api/forum/:id', () => {
     it('should successfully update "publicacao" by id', async () => {
