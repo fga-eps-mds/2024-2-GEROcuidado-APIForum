@@ -3,7 +3,7 @@
 echo ".................................."
 echo "TEST:" $TEST
 
-npm install --legacy-peer-deps
+npm install
 npm run lint
 npm run typeorm:run
 
