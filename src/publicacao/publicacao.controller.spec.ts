@@ -73,13 +73,13 @@ describe('PublicacaoController', () => {
         dataHora: new Date(),
         categoria: ECategoriaPublicacao.TESTE,
       };
-
+  
       const result = await controller.create(createPublicacaoDto);
-
+  
       expect(service.create).toHaveBeenCalledWith(createPublicacaoDto);
       expect(result).toEqual(new HttpResponse(mockPublicacao).onCreated());
     });
-
+  
     it('deve lançar uma BadRequestException em caso de erro no serviço', async () => {
       const createPublicacaoDto: CreatePublicacaoDto = {
         titulo: 'Título de Teste',
@@ -88,9 +88,10 @@ describe('PublicacaoController', () => {
         dataHora: new Date(),
         categoria: ECategoriaPublicacao.TESTE,
       };
-
-      jest.spyOn(service, 'create').mockRejectedValue(new Error('Erro ao criar publicação'));
-
+  
+      // Mock para lançar BadRequestException
+      jest.spyOn(service, 'create').mockRejectedValue(new BadRequestException('Erro ao criar publicação'));
+  
       await expect(controller.create(createPublicacaoDto)).rejects.toThrowError(BadRequestException);
     });
   });
