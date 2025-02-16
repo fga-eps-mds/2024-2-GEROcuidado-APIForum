@@ -9,6 +9,8 @@ services:
     environment:
       - NODE_ENV=test
       - TEST=$TEST
+      - DB_HOST=gerocuidado-forum-db-test  # Nome do serviço do banco
+      - DB_PORT=5002                      # Porta interna do container
     user: root
     ports:
       - '3002:3002'
@@ -30,7 +32,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - '5002:5002'
+      - '5002:5432'  # Host:5002 → Container:5432
     networks:
       - gerocuidado-forum-net-test
 

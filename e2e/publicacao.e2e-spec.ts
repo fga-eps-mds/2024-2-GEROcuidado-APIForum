@@ -99,12 +99,24 @@ describe('E2E - Publicacao', () => {
     repository = app.get<Repository<Publicacao>>(
       getRepositoryToken(Publicacao),
     );
+  }, 60000); // Aumente o timeout para 30 segundos
+
+  afterAll(async () => {
+    if (repository) {
+      await repository.delete({}); // Limpa a tabela de publicações
+    }
+    if (app) {
+      await app.close();
+    }
+    if (client) {
+      await client.close();
+    }
   });
 
   describe('POST - /api/forum', () => {
     it('should successfully add a new "publicacao"', async () => {
       const res = await request(app.getHttpServer())
-        .post('')
+        .post('/api/forum')
         .set('Content-Type', 'application/json')
         .send(publicacao);
 
@@ -120,7 +132,7 @@ describe('E2E - Publicacao', () => {
 
     it('should not add a new "publicacao" when validations are incorrect', async () => {
       const res = await request(app.getHttpServer())
-        .post('')
+        .post('/api/forum')
         .set('Content-Type', 'application/json')
         .send({});
 
@@ -143,7 +155,6 @@ describe('E2E - Publicacao', () => {
       expect(res.body.data).toBeNull();
     });
   });
-
   describe('GET - /api/forum/:id', () => {
     it('should successfully get "publicacao" by id', async () => {
       const res = await request(app.getHttpServer())
