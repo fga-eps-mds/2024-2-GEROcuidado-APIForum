@@ -26,7 +26,6 @@ describe('ComentariosController', () => {
     count: 1,
     pageSize: 10,
   };
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ComentariosController],
@@ -34,16 +33,16 @@ describe('ComentariosController', () => {
         {
           provide: ComentariosService,
           useValue: {
-            create: jest.fn().mockResolvedValue(mockComentario),
-            findAll: jest.fn().mockResolvedValue(mockResponsePaginate),
-            findOne: jest.fn().mockResolvedValue(mockComentario),
-            update: jest.fn().mockResolvedValue(mockComentario),
-            remove: jest.fn().mockResolvedValue(undefined),
+            create: jest.fn().mockResolvedValue(mockComentario), // Retorna diretamente o comentário
+            findAll: jest.fn().mockResolvedValue(mockResponsePaginate), // Retorna diretamente a paginação
+            findOne: jest.fn().mockResolvedValue(mockComentario), // Retorna diretamente o comentário
+            update: jest.fn().mockResolvedValue(mockComentario), // Retorna diretamente o comentário
+            remove: jest.fn().mockResolvedValue(undefined), // Retorna undefined
           },
         },
       ],
     }).compile();
-
+  
     controller = module.get<ComentariosController>(ComentariosController);
     service = module.get<ComentariosService>(ComentariosService);
   });
@@ -64,7 +63,10 @@ describe('ComentariosController', () => {
       const result = await controller.create(createComentarioDto);
 
       expect(service.create).toHaveBeenCalledWith(createComentarioDto);
-      expect(result).toEqual(mockComentario);
+      expect(result).toEqual({
+        message: 'Comentário criado com sucesso!',
+        data: mockComentario,
+      });
     });
 
     it('deve lançar uma BadRequestException em caso de erro no serviço', async () => {
@@ -110,7 +112,11 @@ describe('ComentariosController', () => {
       const result = await controller.findAll(paging, ordering);
 
       expect(service.findAll).toHaveBeenCalledWith(ordering, paging);
-      expect(result).toEqual(mockResponsePaginate);
+      expect(result).toEqual({
+        message: 'Comentários listados com sucesso!',
+        data: mockResponsePaginate.data,
+        pagination: mockResponsePaginate,
+      });
     });
 
     it('deve lançar uma exceção em caso de erro no serviço', async () => {
@@ -134,7 +140,10 @@ describe('ComentariosController', () => {
       const result = await controller.findOne('1');
 
       expect(service.findOne).toHaveBeenCalledWith(1);
-      expect(result).toEqual(mockComentario);
+      expect(result).toEqual({
+        message: 'Comentário encontrado com sucesso!',
+        data: mockComentario,
+      });
     });
 
     it('deve lançar uma exceção em caso de erro no serviço', async () => {
@@ -159,7 +168,10 @@ describe('ComentariosController', () => {
       const result = await controller.update('1', updateComentarioDto);
 
       expect(service.update).toHaveBeenCalledWith(1, updateComentarioDto);
-      expect(result).toEqual(mockComentario);
+      expect(result).toEqual({
+        message: 'Atualizado com sucesso!',
+        data: mockComentario,
+      });
     });
 
     it('deve lançar uma exceção em caso de erro no serviço', async () => {
@@ -185,9 +197,12 @@ describe('ComentariosController', () => {
 
   describe('remove', () => {
     it('deve remover um comentário com sucesso', async () => {
-      await controller.remove('1');
+      const result = await controller.remove('1');
 
       expect(service.remove).toHaveBeenCalledWith(1);
+      expect(result).toEqual({
+        message: 'Excluído com sucesso!',
+      });
     });
 
     it('deve lançar uma exceção em caso de erro no serviço', async () => {

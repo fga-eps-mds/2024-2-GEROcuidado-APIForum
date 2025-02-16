@@ -349,7 +349,7 @@ describe('E2E - Publicacao', () => {
           categoria: ECategoriaPublicacao.GERAL,
           dataHora: new Date().toISOString(),
         });
-  
+    
         // Dados do comentário
         const comentarioData = {
           conteudo: 'Comentário de teste',
@@ -357,19 +357,19 @@ describe('E2E - Publicacao', () => {
           publicacaoId: publicacao.id, // Usa o ID da publicação criada
           dataHora: new Date().toISOString(),
         };
-  
+    
         // Faz a requisição POST
         const res = await request(app.getHttpServer())
           .post('/api/comentarios/comentario')
           .set('Content-Type', 'application/json')
           .send(comentarioData);
-  
+    
         console.log('Resposta da API:', res.body); // Log para depuração
-  
+    
         // Verifica a resposta
         expect(res.statusCode).toEqual(201);
         expect(res.body).toEqual({
-          message: null, // Ajuste para o valor real retornado pela API
+          message: 'Comentário criado com sucesso!', // Ajuste para o valor real retornado pela API
           data: {
             id: expect.any(Number),
             conteudo: 'Comentário de teste',
@@ -395,9 +395,9 @@ describe('E2E - Publicacao', () => {
           .get('/api/comentarios/all')
           .set('Content-Type', 'application/json')
           .send();
-  
+    
         expect(res.statusCode).toEqual(200);
-        expect(res.body.message).toBeNull();
+        expect(res.body.message).toBe('Comentários listados com sucesso!'); // Ajuste para o valor real retornado pela API
         expect(Array.isArray(res.body.data)).toBeTruthy();
       });
     });
