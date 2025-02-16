@@ -1,11 +1,11 @@
 <testExecutions version="1">
 <file path="src\publicacao\comentario.service.spec.ts">
-<testCase name="ComentariosService deve estar definido" duration="19" />
+<testCase name="ComentariosService deve estar definido" duration="15" />
 <testCase name="ComentariosService create deve criar um coment&#xe1;rio com sucesso" duration="6" />
-<testCase name="ComentariosService create deve lan&#xe7;ar NotFoundException se a publica&#xe7;&#xe3;o n&#xe3;o for encontrada" duration="16" />
-<testCase name="ComentariosService create deve lan&#xe7;ar BadRequestException se ocorrer um erro desconhecido" duration="7" />
-<testCase name="ComentariosService findAll deve retornar uma lista paginada de coment&#xe1;rios com usu&#xe1;rios" duration="24" />
-<testCase name="ComentariosService findAll deve lidar com erro na comunica&#xe7;&#xe3;o com o microservi&#xe7;o de usu&#xe1;rio" duration="5">
+<testCase name="ComentariosService create deve lan&#xe7;ar NotFoundException se a publica&#xe7;&#xe3;o n&#xe3;o for encontrada" duration="14" />
+<testCase name="ComentariosService create deve lan&#xe7;ar BadRequestException se ocorrer um erro desconhecido" duration="6" />
+<testCase name="ComentariosService findAll deve retornar uma lista paginada de coment&#xe1;rios com usu&#xe1;rios" duration="27" />
+<testCase name="ComentariosService findAll deve lidar com erro na comunica&#xe7;&#xe3;o com o microservi&#xe7;o de usu&#xe1;rio" duration="4">
 <failure message="Error"><![CDATA[Error: Timeout
     at C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\publicacao\comentario.service.spec.ts:165:72
     at Observable.init [as _subscribe] (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\rxjs\src\internal\observable\throwError.ts:123:68)
@@ -26,41 +26,9 @@
     at ComentariosService.map [as findAll] (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\publicacao\comentario.service.ts:61:14)
     at Object.&lt;anonymous&gt; (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\publicacao\comentario.service.spec.ts:170:22)]]></failure>
 </testCase>
-<testCase name="ComentariosService findOne deve retornar um coment&#xe1;rio com informa&#xe7;&#xf5;es do usu&#xe1;rio" duration="9" />
-<testCase name="ComentariosService findOne deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado" duration="6">
-<failure message="Error"><![CDATA[Error: expect(received).rejects.toThrowError(expected)
-
-Expected constructor: NotFoundException
-Received constructor: Error
-
-Received message: &quot;&quot;
-
-      190 |
-      191 |     it(&apos;deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado&apos;, async () =&gt; {
-    &gt; 192 |       jest.spyOn(comentarioRepository, &apos;findOneOrFail&apos;).mockRejectedValue(new Error());
-          |                                                                           ^
-      193 |
-      194 |       await expect(service.findOne(999)).rejects.toThrowError(
-      195 |         NotFoundException,
-
-      at Object.&lt;anonymous&gt; (src/publicacao/comentario.service.spec.ts:192:75)
-    at Object.toThrowError (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\expect\build\index.js:218:22)
-    at Object.&lt;anonymous&gt; (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\publicacao\comentario.service.spec.ts:194:50)
-    at Promise.then.completed (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:316:40)
-    at _runTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:444:34)]]></failure>
-</testCase>
-<testCase name="ComentariosService findOne deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio for undefined" duration="6">
+<testCase name="ComentariosService findOne deve retornar um coment&#xe1;rio com informa&#xe7;&#xf5;es do usu&#xe1;rio" duration="4" />
+<testCase name="ComentariosService findOne deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado" duration="2" />
+<testCase name="ComentariosService findOne deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio for undefined" duration="18">
 <failure message="Error"><![CDATA[Error: expect(received).rejects.toThrowError(expected)
 
 Expected constructor: NotFoundException
@@ -102,7 +70,7 @@ Received message: &quot;Cannot read properties of undefined (reading &apos;idUsu
 
 @@ -2,6 +2,10 @@
     &quot;conteudo&quot;: &quot;Coment&#xe1;rio de teste&quot;,
-    &quot;dataHora&quot;: &quot;2025-02-16T03:57:24.117Z&quot;,
+    &quot;dataHora&quot;: &quot;2025-02-16T04:39:01.594Z&quot;,
     &quot;id&quot;: 1,
     &quot;idUsuario&quot;: 1,
     &quot;publicacaoId&quot;: 1,
@@ -116,40 +84,8 @@ Received message: &quot;Cannot read properties of undefined (reading &apos;idUsu
 Number of calls: 1
     at Object.&lt;anonymous&gt; (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\publicacao\comentario.service.spec.ts:215:42)]]></failure>
 </testCase>
-<testCase name="ComentariosService update deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado para atualiza&#xe7;&#xe3;o" duration="23">
-<failure message="Error"><![CDATA[Error: expect(received).rejects.toThrowError(expected)
-
-Expected constructor: NotFoundException
-Received constructor: Error
-
-Received message: &quot;&quot;
-
-      221 |       const updateComentarioDto = { conteudo: &apos;Coment&#xe1;rio atualizado&apos; };
-      222 |
-    &gt; 223 |       jest.spyOn(comentarioRepository, &apos;findOneOrFail&apos;).mockRejectedValue(new Error());
-          |                                                                           ^
-      224 |
-      225 |       await expect(service.update(999, updateComentarioDto)).rejects.toThrowError(
-      226 |         NotFoundException,
-
-      at Object.&lt;anonymous&gt; (src/publicacao/comentario.service.spec.ts:223:75)
-    at Object.toThrowError (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\expect\build\index.js:218:22)
-    at Object.&lt;anonymous&gt; (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\publicacao\comentario.service.spec.ts:225:70)
-    at Promise.then.completed (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:316:40)
-    at _runTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:444:34)]]></failure>
-</testCase>
-<testCase name="ComentariosService remove deve remover um coment&#xe1;rio com sucesso" duration="4">
+<testCase name="ComentariosService update deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado para atualiza&#xe7;&#xe3;o" duration="3" />
+<testCase name="ComentariosService remove deve remover um coment&#xe1;rio com sucesso" duration="5">
 <failure message="Error"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 - Expected
@@ -157,7 +93,7 @@ Received message: &quot;&quot;
 
 @@ -2,6 +2,10 @@
     &quot;conteudo&quot;: &quot;Coment&#xe1;rio de teste&quot;,
-    &quot;dataHora&quot;: &quot;2025-02-16T03:57:24.117Z&quot;,
+    &quot;dataHora&quot;: &quot;2025-02-16T04:39:01.594Z&quot;,
     &quot;id&quot;: 1,
     &quot;idUsuario&quot;: 1,
     &quot;publicacaoId&quot;: 1,
@@ -170,51 +106,19 @@ Received message: &quot;&quot;
 Number of calls: 1
     at Object.&lt;anonymous&gt; (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\publicacao\comentario.service.spec.ts:236:43)]]></failure>
 </testCase>
-<testCase name="ComentariosService remove deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado para remo&#xe7;&#xe3;o" duration="19">
-<failure message="Error"><![CDATA[Error: expect(received).rejects.toThrowError(expected)
-
-Expected constructor: NotFoundException
-Received constructor: Error
-
-Received message: &quot;&quot;
-
-      238 |
-      239 |     it(&apos;deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado para remo&#xe7;&#xe3;o&apos;, async () =&gt; {
-    &gt; 240 |       jest.spyOn(comentarioRepository, &apos;findOneOrFail&apos;).mockRejectedValue(new Error());
-          |                                                                           ^
-      241 |
-      242 |       await expect(service.remove(999)).rejects.toThrowError(
-      243 |         NotFoundException,
-
-      at Object.&lt;anonymous&gt; (src/publicacao/comentario.service.spec.ts:240:75)
-    at Object.toThrowError (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\expect\build\index.js:218:22)
-    at Object.&lt;anonymous&gt; (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\publicacao\comentario.service.spec.ts:242:49)
-    at Promise.then.completed (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:316:40)
-    at _runTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:444:34)]]></failure>
-</testCase>
+<testCase name="ComentariosService remove deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado para remo&#xe7;&#xe3;o" duration="2" />
 </file>
 <file path="src\publicacao\denuncia.service.spec.ts">
-<testCase name="DenunciaService deve estar definido" duration="8" />
-<testCase name="DenunciaService create deve criar uma den&#xfa;ncia com sucesso" duration="8">
+<testCase name="DenunciaService deve estar definido" duration="5" />
+<testCase name="DenunciaService create deve criar uma den&#xfa;ncia com sucesso" duration="6">
 <failure message="Error"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 - Expected
 + Received
 
   Object {
--   &quot;dataHora&quot;: 2025-02-16T03:57:25.411Z,
-+   &quot;dataHora&quot;: &quot;2025-02-16T03:57:25.411Z&quot;,
+-   &quot;dataHora&quot;: 2025-02-16T04:39:02.699Z,
++   &quot;dataHora&quot;: &quot;2025-02-16T04:39:02.699Z&quot;,
     &quot;descricao&quot;: &quot;Descri&#xe7;&#xe3;o da den&#xfa;ncia&quot;,
     &quot;idUsuario&quot;: 1,
     &quot;motivo&quot;: &quot;Conte&#xfa;do inadequado&quot;,
@@ -224,60 +128,27 @@ Received message: &quot;&quot;
 Number of calls: 1
     at Object.&lt;anonymous&gt; (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\publicacao\denuncia.service.spec.ts:100:33)]]></failure>
 </testCase>
-<testCase name="DenunciaService create deve lan&#xe7;ar uma exce&#xe7;&#xe3;o se a publica&#xe7;&#xe3;o n&#xe3;o for encontrada" duration="11">
-<failure message="Error"><![CDATA[Error: expect(received).rejects.toThrowError(expected)
-
-Expected constructor: NotFoundException
-Received constructor: Error
-
-Received message: &quot;Publica&#xe7;&#xe3;o n&#xe3;o encontrada!&quot;
-
-      30 |
-      31 |     if (!publicacao) {
-    &gt; 32 |       throw new Error(&apos;Publica&#xe7;&#xe3;o n&#xe3;o encontrada!&apos;);
-         |             ^
-      33 |     }
-      34 |
-      35 |     const denuncia = this._repository.create({
-
-      at DenunciaService.create (src/publicacao/denuncia.service.ts:32:13)
-      at Object.&lt;anonymous&gt; (src/publicacao/denuncia.service.spec.ts:119:7)
-    at Object.toThrowError (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\expect\build\index.js:218:22)
-    at Object.&lt;anonymous&gt; (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\publicacao\denuncia.service.spec.ts:119:63)
-    at Promise.then.completed (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:316:40)
-    at _runTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:444:34)]]></failure>
-</testCase>
-<testCase name="DenunciaService create deve lan&#xe7;ar uma exce&#xe7;&#xe3;o se ocorrer um erro ao salvar a den&#xfa;ncia" duration="18" />
-<testCase name="DenunciaService findAll deve retornar uma lista paginada de den&#xfa;ncias" duration="7" />
-<testCase name="DenunciaService findOne deve retornar uma den&#xfa;ncia pelo ID" duration="5" />
-<testCase name="DenunciaService findOne deve lan&#xe7;ar uma exce&#xe7;&#xe3;o se a den&#xfa;ncia n&#xe3;o for encontrada" duration="3" />
-<testCase name="DenunciaService update deve atualizar uma den&#xfa;ncia com sucesso" duration="9">
+<testCase name="DenunciaService create deve lan&#xe7;ar uma exce&#xe7;&#xe3;o se a publica&#xe7;&#xe3;o n&#xe3;o for encontrada" duration="6" />
+<testCase name="DenunciaService create deve lan&#xe7;ar uma exce&#xe7;&#xe3;o se ocorrer um erro ao salvar a den&#xfa;ncia" duration="5" />
+<testCase name="DenunciaService findAll deve retornar uma lista paginada de den&#xfa;ncias" duration="4" />
+<testCase name="DenunciaService findOne deve retornar uma den&#xfa;ncia pelo ID" duration="3" />
+<testCase name="DenunciaService findOne deve lan&#xe7;ar uma exce&#xe7;&#xe3;o se a den&#xfa;ncia n&#xe3;o for encontrada" duration="4" />
+<testCase name="DenunciaService update deve atualizar uma den&#xfa;ncia com sucesso" duration="3">
 <failure message="Error"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
-Expected: {&quot;dataHora&quot;: &quot;2025-02-16T03:57:25.476Z&quot;, &quot;descricao&quot;: &quot;Descri&#xe7;&#xe3;o da den&#xfa;ncia&quot;, &quot;id&quot;: 1, &quot;idUsuario&quot;: 1, &quot;motivo&quot;: &quot;Conte&#xfa;do ofensivo&quot;}, {&quot;dataHora&quot;: &quot;2025-02-16T03:57:25.476Z&quot;, &quot;motivo&quot;: &quot;Conte&#xfa;do ofensivo&quot;}
+Expected: {&quot;dataHora&quot;: &quot;2025-02-16T04:39:02.732Z&quot;, &quot;descricao&quot;: &quot;Descri&#xe7;&#xe3;o da den&#xfa;ncia&quot;, &quot;id&quot;: 1, &quot;idUsuario&quot;: 1, &quot;motivo&quot;: &quot;Conte&#xfa;do ofensivo&quot;}, {&quot;dataHora&quot;: &quot;2025-02-16T04:39:02.732Z&quot;, &quot;motivo&quot;: &quot;Conte&#xfa;do ofensivo&quot;}
 
 Number of calls: 0
     at Object.&lt;anonymous&gt; (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\publicacao\denuncia.service.spec.ts:204:32)]]></failure>
 </testCase>
-<testCase name="DenunciaService update deve lan&#xe7;ar uma exce&#xe7;&#xe3;o se a den&#xfa;ncia n&#xe3;o for encontrada" duration="4" />
-<testCase name="DenunciaService remove deve remover uma den&#xfa;ncia com sucesso" duration="3" />
+<testCase name="DenunciaService update deve lan&#xe7;ar uma exce&#xe7;&#xe3;o se a den&#xfa;ncia n&#xe3;o for encontrada" duration="2" />
+<testCase name="DenunciaService remove deve remover uma den&#xfa;ncia com sucesso" duration="14" />
 <testCase name="DenunciaService remove deve lan&#xe7;ar uma exce&#xe7;&#xe3;o se a den&#xfa;ncia n&#xe3;o for encontrada" duration="5" />
 </file>
 <file path="src\publicacao\publicacao.controller.spec.ts">
 <testCase name="PublicacaoController deve estar definido" duration="5" />
-<testCase name="PublicacaoController create deve criar uma publica&#xe7;&#xe3;o com sucesso" duration="5" />
-<testCase name="PublicacaoController create deve lan&#xe7;ar uma BadRequestException em caso de erro no servi&#xe7;o" duration="25">
+<testCase name="PublicacaoController create deve criar uma publica&#xe7;&#xe3;o com sucesso" duration="6" />
+<testCase name="PublicacaoController create deve lan&#xe7;ar uma BadRequestException em caso de erro no servi&#xe7;o" duration="20">
 <failure message="Error"><![CDATA[Error: expect(received).rejects.toThrowError(expected)
 
 Expected constructor: BadRequestException
@@ -310,217 +181,171 @@ Received message: &quot;Erro ao criar publica&#xe7;&#xe3;o&quot;
     at runTestInternal (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:367:16)
     at runTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:444:34)]]></failure>
 </testCase>
-<testCase name="PublicacaoController findAll deve retornar uma lista paginada de publica&#xe7;&#xf5;es" duration="3" />
+<testCase name="PublicacaoController findAll deve retornar uma lista paginada de publica&#xe7;&#xf5;es" duration="4" />
 <testCase name="PublicacaoController findAll deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="4" />
-<testCase name="PublicacaoController findOne deve retornar uma publica&#xe7;&#xe3;o pelo ID" duration="8" />
-<testCase name="PublicacaoController findOne deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="3" />
+<testCase name="PublicacaoController findOne deve retornar uma publica&#xe7;&#xe3;o pelo ID" duration="6" />
+<testCase name="PublicacaoController findOne deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="4" />
 <testCase name="PublicacaoController findOne deve lan&#xe7;ar NotFoundException se a publica&#xe7;&#xe3;o n&#xe3;o for encontrada" duration="3" />
-<testCase name="PublicacaoController update deve atualizar uma publica&#xe7;&#xe3;o com sucesso" duration="2" />
-<testCase name="PublicacaoController update deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="2" />
-<testCase name="PublicacaoController update deve lan&#xe7;ar NotFoundException se a publica&#xe7;&#xe3;o n&#xe3;o for encontrada para atualiza&#xe7;&#xe3;o" duration="3" />
-<testCase name="PublicacaoController remove deve remover uma publica&#xe7;&#xe3;o com sucesso" duration="3" />
+<testCase name="PublicacaoController update deve atualizar uma publica&#xe7;&#xe3;o com sucesso" duration="3" />
+<testCase name="PublicacaoController update deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="4" />
+<testCase name="PublicacaoController update deve lan&#xe7;ar NotFoundException se a publica&#xe7;&#xe3;o n&#xe3;o for encontrada para atualiza&#xe7;&#xe3;o" duration="5" />
+<testCase name="PublicacaoController remove deve remover uma publica&#xe7;&#xe3;o com sucesso" duration="4" />
 <testCase name="PublicacaoController remove deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="3" />
-<testCase name="PublicacaoController remove deve lan&#xe7;ar NotFoundException se a publica&#xe7;&#xe3;o n&#xe3;o for encontrada para remo&#xe7;&#xe3;o" duration="4" />
+<testCase name="PublicacaoController remove deve lan&#xe7;ar NotFoundException se a publica&#xe7;&#xe3;o n&#xe3;o for encontrada para remo&#xe7;&#xe3;o" duration="3" />
 </file>
 <file path="src\publicacao\comentario.controller.spec.ts">
-<testCase name="ComentariosController deve estar definido" duration="4" />
-<testCase name="ComentariosController create deve criar um coment&#xe1;rio com sucesso" duration="5" />
-<testCase name="ComentariosController create deve lan&#xe7;ar uma BadRequestException em caso de erro no servi&#xe7;o" duration="11" />
-<testCase name="ComentariosController create deve lan&#xe7;ar uma BadRequestException em caso de erro desconhecido" duration="6" />
-<testCase name="ComentariosController findAll deve retornar uma lista paginada de coment&#xe1;rios" duration="2" />
-<testCase name="ComentariosController findAll deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="3" />
-<testCase name="ComentariosController findOne deve retornar um coment&#xe1;rio pelo ID" duration="2" />
+<testCase name="ComentariosController deve estar definido" duration="8" />
+<testCase name="ComentariosController create deve criar um coment&#xe1;rio com sucesso" duration="4" />
+<testCase name="ComentariosController create deve lan&#xe7;ar uma BadRequestException em caso de erro no servi&#xe7;o" duration="12" />
+<testCase name="ComentariosController create deve lan&#xe7;ar uma BadRequestException em caso de erro desconhecido" duration="7" />
+<testCase name="ComentariosController findAll deve retornar uma lista paginada de coment&#xe1;rios" duration="18" />
+<testCase name="ComentariosController findAll deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="11" />
+<testCase name="ComentariosController findOne deve retornar um coment&#xe1;rio pelo ID" duration="3" />
 <testCase name="ComentariosController findOne deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="3" />
-<testCase name="ComentariosController findOne deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado" duration="3" />
-<testCase name="ComentariosController update deve atualizar um coment&#xe1;rio com sucesso" duration="2" />
-<testCase name="ComentariosController update deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="7" />
-<testCase name="ComentariosController update deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado para atualiza&#xe7;&#xe3;o" duration="3" />
-<testCase name="ComentariosController remove deve remover um coment&#xe1;rio com sucesso" duration="2" />
+<testCase name="ComentariosController findOne deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado" duration="4" />
+<testCase name="ComentariosController update deve atualizar um coment&#xe1;rio com sucesso" duration="4" />
+<testCase name="ComentariosController update deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="4" />
+<testCase name="ComentariosController update deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado para atualiza&#xe7;&#xe3;o" duration="8" />
+<testCase name="ComentariosController remove deve remover um coment&#xe1;rio com sucesso" duration="3" />
 <testCase name="ComentariosController remove deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="3" />
 <testCase name="ComentariosController remove deve lan&#xe7;ar NotFoundException se o coment&#xe1;rio n&#xe3;o for encontrado para remo&#xe7;&#xe3;o" duration="3" />
 </file>
 <file path="src\publicacao\publicacao.service.spec.ts">
-<testCase name="PublicacaoService should be defined" duration="4" />
-<testCase name="PublicacaoService should create Publicacao" duration="5" />
-<testCase name="PublicacaoService should find Publicacao" duration="6" />
-<testCase name="PublicacaoService should remove Publicacao" duration="2" />
-<testCase name="PublicacaoService should update Publicacao" duration="2" />
-<testCase name="PublicacaoService findAll should findAll Publicacao" duration="5" />
+<testCase name="PublicacaoService should be defined" duration="5" />
+<testCase name="PublicacaoService should create Publicacao" duration="4" />
+<testCase name="PublicacaoService should find Publicacao" duration="5" />
+<testCase name="PublicacaoService should remove Publicacao" duration="3" />
+<testCase name="PublicacaoService should update Publicacao" duration="3" />
+<testCase name="PublicacaoService findAll should findAll Publicacao" duration="22" />
 <testCase name="PublicacaoService findAll should findAll Publicacao with isReported" duration="3" />
 <testCase name="PublicacaoService findAll should findAll Publicacao with title unaccent" duration="3" />
 </file>
 <file path="src\publicacao\denuncia.controller.spec.ts">
-<testCase name="DenunciaController deve estar definido" duration="5" />
+<testCase name="DenunciaController deve estar definido" duration="4" />
 <testCase name="DenunciaController create deve criar uma den&#xfa;ncia com sucesso" duration="3" />
-<testCase name="DenunciaController create deve lan&#xe7;ar uma BadRequestException em caso de erro no servi&#xe7;o" duration="9" />
-<testCase name="DenunciaController findAll deve retornar uma lista paginada de den&#xfa;ncias" duration="3" />
-<testCase name="DenunciaController findAll deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="3" />
-<testCase name="DenunciaController findOne deve retornar uma den&#xfa;ncia pelo ID" duration="2" />
-<testCase name="DenunciaController findOne deve lan&#xe7;ar uma exce&#xe7;&#xe3;o em caso de erro no servi&#xe7;o" duration="2" />
-<testCase name="DenunciaController update deve atualizar uma den&#xfa;ncia com sucesso" duration="3" />
-<testCase name="DenunciaController update deve lan&#xe7;ar uma BadRequestException em caso de erro no servi&#xe7;o" duration="2" />
-<testCase name="DenunciaController remove deve remover uma den&#xfa;ncia com sucesso" duration="3" />
-<testCase name="DenunciaController remove deve lan&#xe7;ar uma BadRequestException em caso de erro no servi&#xe7;o" duration="9" />
+<testCase name="DenunciaController create deve lan&#xe7;ar BadRequestException em caso de erro" duration="11" />
+<testCase name="DenunciaController findAll deve retornar uma lista paginada de den&#xfa;ncias" duration="4" />
+<testCase name="DenunciaController findOne deve retornar uma den&#xfa;ncia pelo ID" duration="4" />
+<testCase name="DenunciaController findOne deve lan&#xe7;ar BadRequestException em caso de erro" duration="5" />
+<testCase name="DenunciaController update deve atualizar uma den&#xfa;ncia com sucesso" duration="7" />
+<testCase name="DenunciaController update deve lan&#xe7;ar BadRequestException em caso de erro" duration="2" />
+<testCase name="DenunciaController remove deve remover uma den&#xfa;ncia com sucesso" duration="2" />
+<testCase name="DenunciaController remove deve lan&#xe7;ar BadRequestException em caso de erro" duration="3" />
 </file>
 <file path="src\autenticacao.guard.spec.ts">
 <testCase name="AutenticacaoGuard deve estar definido" duration="7" />
 <testCase name="AutenticacaoGuard deve permitir acesso se a rota for p&#xfa;blica" duration="4" />
-<testCase name="AutenticacaoGuard deve lan&#xe7;ar UnauthorizedException se o JWT n&#xe3;o for v&#xe1;lido" duration="26">
-<failure message="Error"><![CDATA[Error: expect(received).rejects.toThrow(expected)
-
-Expected constructor: UnauthorizedException
-Received constructor: Error
-
-Received message: &quot;&quot;
-
-      58 |   it(&apos;deve lan&#xe7;ar UnauthorizedException se o JWT n&#xe3;o for v&#xe1;lido&apos;, async () =&gt; {
-      59 |     jest.spyOn(reflector, &apos;getAllAndOverride&apos;).mockReturnValue(false);
-    &gt; 60 |     jest.spyOn(clientProxy, &apos;send&apos;).mockReturnValue(throwError(() =&gt; new Error()));
-         |                                                                      ^
-      61 |
-      62 |     const context = {
-      63 |       switchToHttp: () =&gt; ({
-
-      at src/autenticacao.guard.spec.ts:60:70
-      at Observable.init [as _subscribe] (node_modules/rxjs/src/internal/observable/throwError.ts:123:68)
-      at Observable.Object.&lt;anonymous&gt;.Observable._trySubscribe (node_modules/rxjs/src/internal/Observable.ts:245:19)
-      at node_modules/rxjs/src/internal/Observable.ts:235:18
-      at Object.errorContext (node_modules/rxjs/src/internal/util/errorContext.ts:29:5)
-      at Observable.Object.&lt;anonymous&gt;.Observable.subscribe (node_modules/rxjs/src/internal/Observable.ts:221:5)
-      at node_modules/rxjs/src/internal/operators/timeout.ts:363:41
-      at SafeSubscriber.&lt;anonymous&gt; (node_modules/rxjs/src/internal/util/lift.ts:24:18)
-      at node_modules/rxjs/src/internal/Observable.ts:227:22
-      at Object.errorContext (node_modules/rxjs/src/internal/util/errorContext.ts:29:5)
-      at Observable.Object.&lt;anonymous&gt;.Observable.subscribe (node_modules/rxjs/src/internal/Observable.ts:221:5)
-      at node_modules/rxjs/src/internal/lastValueFrom.ts:59:12
-      at lastValueFrom (node_modules/rxjs/src/internal/lastValueFrom.ts:56:10)
-      at AutenticacaoGuard.canActivate (src/autenticacao.guard.ts:35:41)
-      at Object.&lt;anonymous&gt; (src/autenticacao.guard.spec.ts:74:24)
-    at Object.toThrow (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\expect\build\index.js:218:22)
-    at Object.&lt;anonymous&gt; (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\src\autenticacao.guard.spec.ts:74:54)
-    at Promise.then.completed (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:316:40)
-    at _runTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\Merli\Desktop\MDS\2024-2-GEROcuidado-APIForum\node_modules\jest-runner\build\runTest.js:444:34)]]></failure>
-</testCase>
-<testCase name="AutenticacaoGuard deve permitir acesso se o JWT for v&#xe1;lido" duration="6" />
-<testCase name="AutenticacaoGuard deve lan&#xe7;ar UnauthorizedException se n&#xe3;o houver resposta do servi&#xe7;o de autentica&#xe7;&#xe3;o" duration="14" />
+<testCase name="AutenticacaoGuard deve lan&#xe7;ar UnauthorizedException se o JWT n&#xe3;o for v&#xe1;lido" duration="21" />
+<testCase name="AutenticacaoGuard deve permitir acesso se o JWT for v&#xe1;lido" duration="5" />
+<testCase name="AutenticacaoGuard deve lan&#xe7;ar UnauthorizedException se n&#xe3;o houver resposta do servi&#xe7;o de autentica&#xe7;&#xe3;o" duration="4" />
 </file>
 <file path="src\shared\helpers\sql-query-helper.spec.ts">
 <testCase name="Where Clause EQUAL should return empty string if value is undefined" duration="1" />
-<testCase name="Where Clause EQUAL should return where string based on given value and tableColumn" duration="0" />
-<testCase name="Where Clause STRING should return empty string if value is undefined" duration="0" />
-<testCase name="Where Clause STRING should return empty string if value has no length" duration="0" />
+<testCase name="Where Clause EQUAL should return where string based on given value and tableColumn" duration="1" />
+<testCase name="Where Clause STRING should return empty string if value is undefined" duration="1" />
+<testCase name="Where Clause STRING should return empty string if value has no length" duration="1" />
 <testCase name="Where Clause STRING should return where string based on given value and tableColumn" duration="1" />
-<testCase name="Where Clause NUMBER should return empty string if value is undefined" duration="3" />
-<testCase name="Where Clause NUMBER should return where string based on given value and tableColumn" duration="1" />
+<testCase name="Where Clause NUMBER should return empty string if value is undefined" duration="0" />
+<testCase name="Where Clause NUMBER should return where string based on given value and tableColumn" duration="0" />
 <testCase name="Where Clause BOOLEAN should return empty string if value is undefined" duration="1" />
-<testCase name="Where Clause BOOLEAN should return empty string if value is higher than 1" duration="0" />
+<testCase name="Where Clause BOOLEAN should return empty string if value is higher than 1" duration="1" />
 <testCase name="Where Clause BOOLEAN should return where string based on given value and tableColumn" duration="0" />
 <testCase name="Where Clause ARRAY NUMBER should return empty string if value is undefined" duration="0" />
 <testCase name="Where Clause ARRAY NUMBER should return where string if value is number" duration="1" />
-<testCase name="Where Clause ARRAY NUMBER should return where string if value is number array" duration="0" />
+<testCase name="Where Clause ARRAY NUMBER should return where string if value is number array" duration="1" />
 </file>
 <file path="src\config\db\db.service.spec.ts">
-<testCase name="DbService should be defined" duration="5" />
-<testCase name="DbService should return db config development" duration="8" />
-<testCase name="DbService should return db config production" duration="3" />
+<testCase name="DbService should be defined" duration="4" />
+<testCase name="DbService should return db config development" duration="2" />
+<testCase name="DbService should return db config production" duration="2" />
 </file>
 <file path="src\shared\decorators\paginate.decorator.spec.ts">
-<testCase name="Pagination should be defined" duration="1" />
+<testCase name="Pagination should be defined" duration="3" />
 <testCase name="Pagination should be Paginate" duration="1" />
 <testCase name="Pagination should be Paginate not limit" duration="1" />
-<testCase name="Pagination should be Paginate not offset" duration="1" />
+<testCase name="Pagination should be Paginate not offset" duration="0" />
 </file>
 <file path="src\shared\interceptors\data-transform.interceptor.spec.ts">
-<testCase name="DataTransformInterceptor should be defined" duration="0" />
-<testCase name="DataTransformInterceptor should be intercept t1" duration="1" />
-<testCase name="DataTransformInterceptor should be intercept should formatData with message" duration="0" />
+<testCase name="DataTransformInterceptor should be defined" duration="1" />
+<testCase name="DataTransformInterceptor should be intercept t1" duration="2" />
+<testCase name="DataTransformInterceptor should be intercept should formatData with message" duration="1" />
 <testCase name="DataTransformInterceptor should be intercept should formatData with no message" duration="1" />
 <testCase name="DataTransformInterceptor should be intercept should formatData with Paginate" duration="1" />
 </file>
 <file path="src\shared\helpers\buffer-to-image.spec.ts">
-<testCase name="Buffer to image bufferToBase64 should be bufferToBase64 a image" duration="2" />
+<testCase name="Buffer to image bufferToBase64 should be bufferToBase64 a image" duration="1" />
 <testCase name="Buffer to image bufferToBase64 should be bufferToBase64 a empty if null" duration="1" />
 <testCase name="Buffer to image bufferToBase64 should be bufferToBase64 a empty if not image" duration="1" />
 <testCase name="Buffer to image isBase64 should be false" duration="1" />
-<testCase name="Buffer to image isBase64 should be true" duration="0" />
-<testCase name="Buffer to image isBase64Image should be false" duration="0" />
+<testCase name="Buffer to image isBase64 should be true" duration="1" />
+<testCase name="Buffer to image isBase64Image should be false" duration="1" />
 <testCase name="Buffer to image isBase64Image should be true" duration="1" />
 </file>
 <file path="src\shared\filters\all-exceptions.filter.spec.ts">
-<testCase name="AllExceptionsFilter should be defined" duration="0" />
+<testCase name="AllExceptionsFilter should be defined" duration="1" />
 <testCase name="AllExceptionsFilter should be catch" duration="1" />
-<testCase name="AllExceptionsFilter should be not exception to class-validator" duration="1" />
+<testCase name="AllExceptionsFilter should be not exception to class-validator" duration="0" />
 <testCase name="AllExceptionsFilter should be not exception only message" duration="0" />
 </file>
 <file path="src\data-source.spec.ts">
-<testCase name="AppDataSource deve estar configurado corretamente" duration="1" />
+<testCase name="AppDataSource deve estar configurado corretamente" duration="2" />
 <testCase name="AppDataSource deve inicializar sem erros" duration="1" />
 <testCase name="AppDataSource deve lan&#xe7;ar um erro se a inicializa&#xe7;&#xe3;o falhar" duration="4" />
 </file>
 <file path="src\shared\classes\http-response.spec.ts">
-<testCase name="HttpResponse should be defined" duration="2" />
+<testCase name="HttpResponse should be defined" duration="1" />
 <testCase name="HttpResponse should create message with payload text" duration="1" />
-<testCase name="HttpResponse should create message with success text" duration="1" />
-<testCase name="HttpResponse should create message with updated text" duration="1" />
-<testCase name="HttpResponse should create message with deleted text" duration="1" />
+<testCase name="HttpResponse should create message with success text" duration="0" />
+<testCase name="HttpResponse should create message with updated text" duration="0" />
+<testCase name="HttpResponse should create message with deleted text" duration="0" />
 </file>
 <file path="src\shared\decorators\ordenate.decorator.spec.ts">
 <testCase name="Pagination should be defined" duration="1" />
 <testCase name="Pagination should be Paginate" duration="1" />
-<testCase name="Pagination should be Paginate not limit" duration="0" />
-<testCase name="Pagination should be Paginate not offset" duration="0" />
-<testCase name="Ordenate should return default object if there is no JSON" duration="1" />
-<testCase name="Ordenate should return OrderParams object with values for order" duration="1" />
+<testCase name="Pagination should be Paginate not limit" duration="1" />
+<testCase name="Pagination should be Paginate not offset" duration="1" />
+<testCase name="Ordenate should return default object if there is no JSON" duration="0" />
+<testCase name="Ordenate should return OrderParams object with values for order" duration="0" />
 <testCase name="Ordenate should return default values when obj has empty props" duration="1" />
 <testCase name="Ordenate should be Ordenate using factory" duration="1" />
 </file>
 <file path="src\shared\decorators\filtrate.decorator.spec.ts">
-<testCase name="Pagination should be defined" duration="1" />
-<testCase name="Pagination should be Paginate" duration="4" />
-<testCase name="Pagination should be Paginate not limit" duration="1" />
-<testCase name="Pagination should be Paginate not offset" duration="1" />
-<testCase name="Filtrate should return empty object for filter" duration="1" />
+<testCase name="Pagination should be defined" duration="4" />
+<testCase name="Pagination should be Paginate" duration="0" />
+<testCase name="Pagination should be Paginate not limit" duration="0" />
+<testCase name="Pagination should be Paginate not offset" duration="0" />
+<testCase name="Filtrate should return empty object for filter" duration="0" />
 <testCase name="Filtrate should return TestFilterProps object with values for filter" duration="1" />
-<testCase name="Filtrate should be Filtrate using factory" duration="0" />
+<testCase name="Filtrate should be Filtrate using factory" duration="1" />
 </file>
 <file path="src\shared\helpers\commons.spec.ts">
-<testCase name="Helper deve criar um hash com tamanho default" duration="3" />
-<testCase name="Helper should be return if its nill for undefined" duration="2" />
-<testCase name="Helper should be return if its nill for null" duration="0" />
-<testCase name="Helper should be isJsonObject to be true" duration="1" />
-<testCase name="Helper should be isJsonObject to be false" duration="0" />
-<testCase name="Helper should be isJsonObject to be false in not parse" duration="0" />
+<testCase name="Helper deve criar um hash com tamanho default" duration="26" />
+<testCase name="Helper should be return if its nill for undefined" duration="13" />
+<testCase name="Helper should be return if its nill for null" duration="1" />
+<testCase name="Helper should be isJsonObject to be true" duration="2" />
+<testCase name="Helper should be isJsonObject to be false" duration="1" />
+<testCase name="Helper should be isJsonObject to be false in not parse" duration="1" />
 </file>
 <file path="src\shared\decorators\filtrate-string.spec.ts">
 <testCase name="Pagination should be defined" duration="1" />
-<testCase name="Pagination should be Paginate" duration="0" />
-<testCase name="Pagination should be Paginate not limit" duration="0" />
+<testCase name="Pagination should be Paginate" duration="2" />
+<testCase name="Pagination should be Paginate not limit" duration="1" />
 <testCase name="Pagination should be Paginate not offset" duration="1" />
 <testCase name="FiltrateString should return empty object for filter" duration="1" />
-<testCase name="FiltrateString should return TestFilterProps object with values for filter" duration="1" />
-<testCase name="FiltrateString should be FiltrateString using factory" duration="1" />
+<testCase name="FiltrateString should return TestFilterProps object with values for filter" duration="0" />
+<testCase name="FiltrateString should be FiltrateString using factory" duration="0" />
 </file>
 <file path="src\shared\filters\model-not-found.exception-filter.spec.ts">
-<testCase name="ModelNotFoundExceptionFilter should be defined" duration="3" />
-<testCase name="ModelNotFoundExceptionFilter should be catch" duration="2" />
+<testCase name="ModelNotFoundExceptionFilter should be defined" duration="0" />
+<testCase name="ModelNotFoundExceptionFilter should be catch" duration="1" />
 </file>
 <file path="src\shared\helpers\string-helpers.spec.ts">
 <testCase name="String Helpers should be regex" duration="1" />
 </file>
 <file path="src\shared\decorators\public-route.spec.ts">
-<testCase name="Pagination should be defined" duration="1" />
+<testCase name="Pagination should be defined" duration="3" />
 </file>
 <file path="src\shared\validators\id.validator.spec.ts">
-<testCase name="HttpResponse should be defined" duration="2" />
+<testCase name="HttpResponse should be defined" duration="1" />
 </file>
 </testExecutions>

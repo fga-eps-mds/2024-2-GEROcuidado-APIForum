@@ -1,28 +1,14 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { ClientProxy } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { AutenticacaoGuard } from './autenticacao.guard';
 
 describe('AutenticacaoGuard', () => {
   let guard: AutenticacaoGuard;
+  let clientProxy: ClientProxy;
   let reflector: Reflector;
-
-  const mockClientProxy = {
-    send: jest.fn(),
-  };
-
-  const mockContext = {
-    switchToHttp: jest.fn().mockReturnValue({
-      getRequest: jest.fn().mockReturnValue({
-        headers: {
-          authorization: 'Bearer token',
-        },
-      }),
-    }),
-    getHandler: jest.fn(),
-    getClass: jest.fn(),
-  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,29 +16,46 @@ describe('AutenticacaoGuard', () => {
         AutenticacaoGuard,
         {
           provide: 'USUARIO_CLIENT',
-          useValue: mockClientProxy,
+          useValue: {
+            send: jest.fn(),
+          },
         },
-        Reflector,
+        {
+          provide: Reflector,
+          useValue: {
+            getAllAndOverride: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     guard = module.get<AutenticacaoGuard>(AutenticacaoGuard);
+    clientProxy = module.get<ClientProxy>('USUARIO_CLIENT');
     reflector = module.get<Reflector>(Reflector);
   });
 
-  it('should be defined', () => {
+  it('deve estar definido', () => {
     expect(guard).toBeDefined();
   });
 
-  it('should pass if route is public', async () => {
+  it('deve permitir acesso se a rota for pública', async () => {
     jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(true);
 
-    const result = await guard.canActivate(mockContext as any);
+    const context = {
+      switchToHttp: () => ({
+        getRequest: () => ({
+          headers: {},
+        }),
+      }),
+      getHandler: jest.fn(),
+      getClass: jest.fn(),
+    } as unknown as ExecutionContext;
 
+    const result = await guard.canActivate(context);
     expect(result).toBe(true);
   });
 
-  it('should pass if authentication is successful', async () => {
+  it('deve lançar UnauthorizedException se o JWT não for válido', async () => {
     jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(false);
     jest.spyOn(clientProxy, 'send').mockReturnValue(throwError(() => new UnauthorizedException('Usuário não autenticado!')));
 
@@ -75,21 +78,38 @@ describe('AutenticacaoGuard', () => {
     jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(false);
     jest.spyOn(clientProxy, 'send').mockReturnValue(of(true));
 
-    const result = await guard.canActivate(mockContext as any);
+    const context = {
+      switchToHttp: () => ({
+        getRequest: () => ({
+          headers: {
+            authorization: 'Bearer valid_jwt',
+          },
+        }),
+      }),
+      getHandler: jest.fn(),
+      getClass: jest.fn(),
+    } as unknown as ExecutionContext;
 
+    const result = await guard.canActivate(context);
     expect(result).toBe(true);
   });
 
-  it('should not pass if authentication is unsuccessful', async () => {
+  it('deve lançar UnauthorizedException se não houver resposta do serviço de autenticação', async () => {
     jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(false);
-    mockClientProxy.send.mockReturnValue(of(false));
+    jest.spyOn(clientProxy, 'send').mockReturnValue(of(null));
 
-    guard
-      .canActivate(mockContext as any)
-      .catch((err) =>
-        expect(err).toEqual(
-          new UnauthorizedException('Usuário não autenticado!'),
-        ),
-      );
+    const context = {
+      switchToHttp: () => ({
+        getRequest: () => ({
+          headers: {
+            authorization: 'Bearer valid_jwt',
+          },
+        }),
+      }),
+      getHandler: jest.fn(),
+      getClass: jest.fn(),
+    } as unknown as ExecutionContext;
+
+    await expect(guard.canActivate(context)).rejects.toThrow(UnauthorizedException);
   });
 });

@@ -1,14 +1,12 @@
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Filtering } from '../shared/decorators/filtrate.decorator';
-import { OrderParams, Ordering } from '../shared/decorators/ordenate.decorator';
-import {
-    Pagination,
-    PaginationParams,
-} from '../shared/decorators/paginate.decorator';
+import { HttpResponse } from '../shared/classes/http-response';
+import { ResponsePaginate } from '../shared/interfaces/response-paginate.interface';
+import { IdValidator } from '../shared/validators/id.validator';
 import { ECategoriaPublicacao } from './classes/categoria-publicacao.enum';
-import { Publicacao } from './entities/publicacao.entity';
-import { IPublicacaoFilter } from './interface/publicacao-filter.interface';
+import { CreatePublicacaoDto } from './dto/create-publicacao.dto';
+import { UpdatePublicacaoDto } from './dto/update-publicacao.dto';
+import { IPublicacaoUsuario } from './interface/publicacao-usuario.interface';
 import { PublicacaoController } from './publicacao.controller';
 import { PublicacaoService } from './publicacao.service';
 
@@ -16,51 +14,44 @@ describe('PublicacaoController', () => {
   let controller: PublicacaoController;
   let service: PublicacaoService;
 
-  const publiDto = {
-    titulo: 'titulo',
-    descricao: 'descricao',
-    idUsuario: 1,
-    categoria: ECategoriaPublicacao.ALIMENTACAO,
-    dataHora: new Date(),
-  };
-
-  const publi = {
-    ...publiDto,
+  const mockPublicacao: IPublicacaoUsuario = {
     id: 1,
-    idUsuarioReporte: [],
+    titulo: 'Título de Teste',
+    descricao: 'Descrição de Teste',
+    idUsuario: 1,
+    dataHora: new Date(),
+    idUsuarioReporte: [1],
+    usuario: {
+      id: 1,
+      nome: 'Usuário de Teste',
+      email: 'teste@teste.com',
+      foto: Buffer.from('foto_url'),
+      senha: 'senha_teste',
+      admin: false,
+    },
+    categoria: ECategoriaPublicacao.TESTE, // Replace EXISTING_MEMBER with an actual member of the enum
     comentarios: [],
   };
 
-  const publiUsuario = {
-    ...publi,
-    usuario: {
-      id: 1,
-      nome: 'Henrique',
-      email: 'hacmelo@gmail.com',
-      senha: '123',
-      foto: Buffer.from('1'),
-      admin: false,
-    },
+  const mockResponsePaginate: ResponsePaginate<IPublicacaoUsuario[]> = {
+    data: [mockPublicacao],
+    count: 1,
+    pageSize: 10,
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [],
       controllers: [PublicacaoController],
       providers: [
         {
           provide: PublicacaoService,
           useValue: {
-            create: jest.fn(),
-            findOne: jest.fn(),
-            remove: jest.fn(),
-            update: jest.fn(),
-            findAll: jest.fn(),
+            create: jest.fn().mockResolvedValue(mockPublicacao),
+            findAll: jest.fn().mockResolvedValue(mockResponsePaginate),
+            findOne: jest.fn().mockResolvedValue(mockPublicacao),
+            update: jest.fn().mockResolvedValue(mockPublicacao),
+            remove: jest.fn().mockResolvedValue(undefined),
           },
-        },
-        {
-          provide: getRepositoryToken(Publicacao),
-          useValue: {},
         },
       ],
     }).compile();
@@ -69,7 +60,7 @@ describe('PublicacaoController', () => {
     service = module.get<PublicacaoService>(PublicacaoService);
   });
 
-  it('should be defined', () => {
+  it('deve estar definido', () => {
     expect(controller).toBeDefined();
   });
 
@@ -98,7 +89,7 @@ describe('PublicacaoController', () => {
         categoria: ECategoriaPublicacao.TESTE,
       };
 
-      jest.spyOn(service, 'create').mockRejectedValue(new BadRequestException('Erro ao criar publicação'));
+      jest.spyOn(service, 'create').mockRejectedValue(new Error('Erro ao criar publicação'));
 
       await expect(controller.create(createPublicacaoDto)).rejects.toThrowError(BadRequestException);
     });
@@ -143,40 +134,66 @@ describe('PublicacaoController', () => {
     });
   });
 
-  describe('findAll', () => {
-    const filter: IPublicacaoFilter = {
-      id: 1,
-      categoria: ECategoriaPublicacao.ALIMENTACAO,
-      titulo: 'titulo',
-    };
-    const filtering = new Filtering<IPublicacaoFilter>(JSON.stringify(filter));
+  describe('update', () => {
+    it('deve atualizar uma publicação com sucesso', async () => {
+      const param: IdValidator = { id: 1 };
+      const updatePublicacaoDto: UpdatePublicacaoDto = {
+        titulo: 'Título Atualizado',
+        descricao: 'Descrição Atualizada',
+      };
 
-    const order: OrderParams = {
-      column: 'id',
-      dir: 'ASC',
-    };
-    const ordering: Ordering = new Ordering(JSON.stringify(order));
+      const result = await controller.update(param, updatePublicacaoDto);
 
-    const paginate: PaginationParams = {
-      limit: 10,
-      offset: 0,
-    };
-    const pagination: Pagination = new Pagination(paginate);
+      expect(service.update).toHaveBeenCalledWith(1, updatePublicacaoDto);
+      expect(result).toEqual(new HttpResponse(mockPublicacao).onUpdated());
+    });
 
-    it('should findAll Publicacao', async () => {
-      const expected = { data: [publiUsuario], count: 1, pageSize: 1 };
+    it('deve lançar uma exceção em caso de erro no serviço', async () => {
+      const param: IdValidator = { id: 1 };
+      const updatePublicacaoDto: UpdatePublicacaoDto = {
+        titulo: 'Título Atualizado',
+        descricao: 'Descrição Atualizada',
+      };
 
-      jest.spyOn(service, 'findAll').mockReturnValue(Promise.resolve(expected));
+      jest.spyOn(service, 'update').mockRejectedValue(new Error('Erro ao atualizar publicação'));
 
-      const { data, count, pageSize } = await controller.findAll(
-        filtering,
-        pagination,
-        ordering,
-      );
+      await expect(controller.update(param, updatePublicacaoDto)).rejects.toThrowError(Error);
+    });
 
-      expect(count).toEqual(1);
-      expect(pageSize).toEqual(1);
-      expect(data).toEqual([publiUsuario]);
+    it('deve lançar NotFoundException se a publicação não for encontrada para atualização', async () => {
+      const param: IdValidator = { id: 999 };
+      const updatePublicacaoDto: UpdatePublicacaoDto = {
+        titulo: 'Título Atualizado',
+        descricao: 'Descrição Atualizada',
+      };
+
+      jest.spyOn(service, 'update').mockRejectedValue(new NotFoundException('Publicação não encontrada'));
+
+      await expect(controller.update(param, updatePublicacaoDto)).rejects.toThrowError(NotFoundException);
+    });
+  });
+
+  describe('remove', () => {
+    it('deve remover uma publicação com sucesso', async () => {
+      const param: IdValidator = { id: 1 };
+      const result = await controller.remove(param);
+
+      expect(service.remove).toHaveBeenCalledWith(1);
+      expect(result).toEqual(new HttpResponse(undefined).onDeleted());
+    });
+
+    it('deve lançar uma exceção em caso de erro no serviço', async () => {
+      const param: IdValidator = { id: 1 };
+      jest.spyOn(service, 'remove').mockRejectedValue(new Error('Erro ao remover publicação'));
+
+      await expect(controller.remove(param)).rejects.toThrowError(Error);
+    });
+
+    it('deve lançar NotFoundException se a publicação não for encontrada para remoção', async () => {
+      const param: IdValidator = { id: 999 };
+      jest.spyOn(service, 'remove').mockRejectedValue(new NotFoundException('Publicação não encontrada'));
+
+      await expect(controller.remove(param)).rejects.toThrowError(NotFoundException);
     });
   });
 });
