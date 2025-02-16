@@ -9,7 +9,7 @@ import { CreateComentarioDto } from './dto/create-comentario.dto';
 import { UpdateComentarioDto } from './dto/update-comentario.dto';
 import { Comentario } from './entities/comentario.entity';
 
-@Controller('comentarios')
+@Controller('api/comentarios')
 @PublicRoute()
 export class ComentariosController {
   constructor(private readonly comentariosService: ComentariosService) { }
@@ -41,12 +41,36 @@ export class ComentariosController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateComentarioDto: UpdateComentarioDto) {
-    return this.comentariosService.update(+id, updateComentarioDto);
+async update(
+  @Param('id') id: string,
+  @Body() updateComentarioDto: UpdateComentarioDto,
+) {
+  try {
+    const comentario = await this.comentariosService.update(+id, updateComentarioDto);
+    return {
+      message: 'Atualizado com sucesso!', // Mensagem de sucesso
+      data: comentario, // Dados atualizados
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new BadRequestException(error.message);
+    }
+    throw new BadRequestException('Ocorreu um erro ao atualizar o comentário.');
   }
+}
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.comentariosService.remove(+id);
+@Delete(':id')
+async remove(@Param('id') id: string) {
+  try {
+    await this.comentariosService.remove(+id);
+    return {
+      message: 'Excluído com sucesso!', // Mensagem de sucesso
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new BadRequestException(error.message);
+    }
+    throw new BadRequestException('Ocorreu um erro ao excluir o comentário.');
   }
+}
 }
