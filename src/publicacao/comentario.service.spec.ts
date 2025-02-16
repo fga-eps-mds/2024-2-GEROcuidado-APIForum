@@ -35,13 +35,13 @@ describe('ComentariosService', () => {
         {
           provide: getRepositoryToken(Comentario),
           useValue: {
-            create: jest.fn().mockReturnValue(mockComentario), // Retorna o comentário sem usuário
+            create: jest.fn().mockReturnValue(mockComentario),
             save: jest.fn().mockImplementation((comentario) => {
-              // Retorna o comentário sem usuário para o método `create`
+
               if (comentario === mockComentario) {
                 return Promise.resolve(mockComentario);
               }
-              // Retorna o comentário com usuário para outros métodos
+
               return Promise.resolve(mockComentarioWithUsuario);
             }),
             findOneOrFail: jest.fn().mockResolvedValue(mockComentarioWithUsuario), // Retorna o comentário com usuário
@@ -104,7 +104,7 @@ describe('ComentariosService', () => {
         getLimit: () => 10,
       };
 
-      // Mock do createQueryBuilder
+
       const mockQueryBuilder = {
         leftJoinAndSelect: jest.fn().mockReturnThis(),
         limit: jest.fn().mockReturnThis(),
@@ -119,7 +119,7 @@ describe('ComentariosService', () => {
 
       const result = await service.findAll(ordering, paging);
 
-      // Verificações
+
       expect(comentarioRepository.createQueryBuilder).toHaveBeenCalledWith('comentario');
       expect(mockQueryBuilder.leftJoinAndSelect).toHaveBeenCalledWith('comentario.publicacao', 'publicacao');
       expect(mockQueryBuilder.limit).toHaveBeenCalledWith(paging.limit);
