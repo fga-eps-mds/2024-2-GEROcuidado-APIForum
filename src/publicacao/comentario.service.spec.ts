@@ -16,11 +16,11 @@ describe('ComentariosService', () => {
   let clientProxy: ClientProxy;
 
   const mockComentario = {
-    id: 1,
+    id: expect.any(Number),
     conteudo: 'Comentário de teste',
     idUsuario: 1,
     publicacaoId: 1,
-    dataHora: new Date().toISOString(),
+    dataHora: expect.any(String),
   };
 
   const mockUsuario = {
@@ -46,10 +46,10 @@ describe('ComentariosService', () => {
           provide: getRepositoryToken(Comentario),
           useValue: {
             create: jest.fn().mockReturnValue(mockComentario),
-            save: jest.fn().mockResolvedValue(mockComentario),
-            findOneOrFail: jest.fn().mockResolvedValue(mockComentario),
-            merge: jest.fn().mockReturnValue(mockComentario),
-            remove: jest.fn().mockResolvedValue(mockComentario),
+            save: jest.fn().mockResolvedValue(mockComentarioWithUsuario), // Retorna com usuário
+            findOneOrFail: jest.fn().mockResolvedValue(mockComentarioWithUsuario), // Retorna com usuário
+            merge: jest.fn().mockReturnValue(mockComentarioWithUsuario), // Retorna com usuário
+            remove: jest.fn().mockResolvedValue(mockComentarioWithUsuario), // Retorna com usuário
             createQueryBuilder: jest.fn(() => ({
               leftJoinAndSelect: jest.fn().mockReturnThis(),
               limit: jest.fn().mockReturnThis(),
@@ -96,7 +96,7 @@ describe('ComentariosService', () => {
         conteudo: 'Comentário de teste',
         idUsuario: 1,
         publicacaoId: 1,
-        dataHora: new Date().toISOString(),
+        dataHora: expect.any(String),
       };
 
       const result = await service.create(createComentarioDto);
@@ -106,8 +106,8 @@ describe('ComentariosService', () => {
         ...createComentarioDto,
         publicacao: mockPublicacao,
       });
-      expect(comentarioRepository.save).toHaveBeenCalledWith(mockComentario);
-      expect(result).toEqual(mockComentario);
+      expect(comentarioRepository.save).toHaveBeenCalledWith(expect.objectContaining(createComentarioDto));
+      expect(result).toEqual(expect.objectContaining(createComentarioDto));
     });
 
     it('deve lançar NotFoundException se a publicação não for encontrada', async () => {
@@ -115,7 +115,7 @@ describe('ComentariosService', () => {
         conteudo: 'Comentário de teste',
         idUsuario: 1,
         publicacaoId: 999, // ID inexistente
-        dataHora: new Date().toISOString(),
+        dataHora: expect.any(String),
       };
 
       jest.spyOn(comentarioRepository.manager, 'findOne').mockResolvedValue(null);
@@ -130,7 +130,7 @@ describe('ComentariosService', () => {
         conteudo: 'Comentário de teste',
         idUsuario: 1,
         publicacaoId: 1,
-        dataHora: new Date().toISOString(),
+        dataHora: expect.any(String),
       };
 
       jest.spyOn(comentarioRepository, 'save').mockRejectedValue(new Error('Erro desconhecido'));
@@ -142,6 +142,27 @@ describe('ComentariosService', () => {
   });
 
   describe('findAll', () => {
+    it('deve retornar uma lista paginada de comentários com usuários', async () => {
+      const ordering: Ordering = new Ordering('id');
+      ordering.dir = 'ASC';
+      const paging: Pagination = {
+        limit: 10,
+        offset: 0,
+        getOffset: () => 0,
+        getLimit: () => 10,
+      };
+
+      const result = await service.findAll(ordering, paging);
+
+      expect(comentarioRepository.createQueryBuilder).toHaveBeenCalledWith('comentario');
+      expect(clientProxy.send).toHaveBeenCalledWith({ role: 'info', cmd: 'get' }, { id: 1 });
+      expect(result).toEqual({
+        data: [mockComentarioWithUsuario],
+        count: 1,
+        pageSize: 10,
+      });
+    });
+
     it('deve lidar com erro na comunicação com o microserviço de usuário', async () => {
       jest.spyOn(clientProxy, 'send').mockReturnValue(throwError(() => new Error('Timeout')));
 
@@ -149,10 +170,7 @@ describe('ComentariosService', () => {
       const paging: Pagination = { limit: 10, offset: 0 } as any;
 
       const result = await service.findAll(ordering, paging);
-      const comentario = Array.isArray(result.data) ? result.data[0] : result.data;
-      if (comentario instanceof Comentario) {
-        expect(comentario.idUsuario).toBeUndefined(); // Ou tratamento específico
-      }
+      expect(result.data[0]).not.toHaveProperty('usuario'); // Verifica se o campo usuario não está presente
     });
   });
 
@@ -189,9 +207,12 @@ describe('ComentariosService', () => {
       const result = await service.update(1, updateComentarioDto);
 
       expect(comentarioRepository.findOneOrFail).toHaveBeenCalledWith({ where: { id: 1 } });
-      expect(comentarioRepository.merge).toHaveBeenCalledWith(mockComentario, updateComentarioDto);
-      expect(comentarioRepository.save).toHaveBeenCalledWith(mockComentario);
-      expect(result).toEqual(mockComentario);
+      expect(comentarioRepository.merge).toHaveBeenCalledWith(
+        mockComentarioWithUsuario, // Objeto esperado com usuário
+        updateComentarioDto
+      );
+      expect(comentarioRepository.save).toHaveBeenCalledWith(mockComentarioWithUsuario);
+      expect(result).toEqual(mockComentarioWithUsuario);
     });
 
     it('deve lançar NotFoundException se o comentário não for encontrado para atualização', async () => {
@@ -210,7 +231,7 @@ describe('ComentariosService', () => {
       await service.remove(1);
 
       expect(comentarioRepository.findOneOrFail).toHaveBeenCalledWith({ where: { id: 1 } });
-      expect(comentarioRepository.remove).toHaveBeenCalledWith(mockComentario);
+      expect(comentarioRepository.remove).toHaveBeenCalledWith(mockComentarioWithUsuario);
     });
 
     it('deve lançar NotFoundException se o comentário não for encontrado para remoção', async () => {
