@@ -145,7 +145,7 @@ describe('E2E - Publicacao', () => {
         'titulo should not be empty',
         'titulo must be a string',
         'descricao should not be empty',
-        'descricao must be shorter than or equal to 500 characters',
+        'descricao must be shorter than or equal to 1500 characters',
         'descricao must be a string',
         'dataHora should not be empty',
         'dataHora must be a valid ISO 8601 date string',
@@ -155,46 +155,68 @@ describe('E2E - Publicacao', () => {
       expect(res.body.data).toBeNull();
     });
   });
+  
   describe('GET - /api/forum/:id', () => {
     it('should successfully get "publicacao" by id', async () => {
+      // Cria uma publicação antes de buscar
+      const novaPublicacao = await repository.save({
+        titulo: 'Título de teste',
+        descricao: 'Descrição de teste',
+        idUsuario: 1,
+        categoria: ECategoriaPublicacao.GERAL,
+        dataHora: new Date().toISOString(),
+      });
+  
+      // Usa o ID da publicação criada
       const res = await request(app.getHttpServer())
-        .get(`/${publicacao.id}`)
+        .get(`/api/forum/${novaPublicacao.id}`)
         .set('Content-Type', 'application/json')
         .set('Authorization', 'bearer ' + token)
         .send();
-
+  
+      console.log('Resposta da API:', res.body); // Log para depuração
+  
+      // Verifica a resposta
       expect(res.statusCode).toEqual(200);
       expect(res.body.message).toBeNull();
+  
+      // Verifica se a resposta é um único objeto
       const data = res.body.data;
-      expect(data).toMatchObject(publicacao);
+      expect(data).toMatchObject({
+        id: novaPublicacao.id,
+        titulo: 'Título de teste',
+        descricao: 'Descrição de teste',
+        idUsuario: 1,
+        categoria: ECategoriaPublicacao.GERAL,
+      });
     });
-
+  
     it('should return status 400 when id is invalid', async () => {
       const wrongId = 'NaN';
       const res = await request(app.getHttpServer())
-        .get(`/${wrongId}`)
+        .get(`/api/forum/${wrongId}`)
         .set('Content-Type', 'application/json')
         .set('Authorization', 'bearer ' + token)
         .send();
-
+  
       expect(res.statusCode).toEqual(400);
       expect(res.body.message).toBeInstanceOf(Array);
       expect(res.body.message).toEqual(['ID inválido']);
       expect(res.body.data).toBeNull();
     });
-
+  
     it('should return status 404 when no "publicacao" is found', async () => {
       const res = await request(app.getHttpServer())
-        .get('/9999')
+        .get('/api/forum/9999') // ID que não existe
         .set('Content-Type', 'application/json')
         .set('Authorization', 'bearer ' + token)
         .send();
-
+  
       expect(res.statusCode).toEqual(404);
       expect(res.body.message).toEqual('Registro(s) não encontrado(s)!');
       expect(res.body.data).toBeNull();
     });
-  });
+  });  
 
   describe('GET - /api/forum/', () => {
     it('should successfully findAll "publicacao" empty', async () => {
