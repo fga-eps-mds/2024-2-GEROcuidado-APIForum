@@ -117,7 +117,7 @@ describe('DenunciaService', () => {
       jest.spyOn(publicacaoService, 'findOne').mockResolvedValue(null as any);
 
       await expect(service.create(createDenunciaDto)).rejects.toThrowError(
-        NotFoundException,
+        new NotFoundException('Publicação não encontrada!'),
       );
     });
 

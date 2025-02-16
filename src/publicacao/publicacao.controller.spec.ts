@@ -3,8 +3,8 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Filtering } from '../shared/decorators/filtrate.decorator';
 import { OrderParams, Ordering } from '../shared/decorators/ordenate.decorator';
 import {
-  Pagination,
-  PaginationParams,
+    Pagination,
+    PaginationParams,
 } from '../shared/decorators/paginate.decorator';
 import { ECategoriaPublicacao } from './classes/categoria-publicacao.enum';
 import { Publicacao } from './entities/publicacao.entity';
@@ -73,37 +73,74 @@ describe('PublicacaoController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should create Publicacao', async () => {
-    jest.spyOn(service, 'create').mockReturnValue(Promise.resolve(publi));
+  describe('create', () => {
+    it('deve criar uma publicação com sucesso', async () => {
+      const createPublicacaoDto: CreatePublicacaoDto = {
+        titulo: 'Título de Teste',
+        descricao: 'Descrição de Teste',
+        idUsuario: 1,
+        dataHora: new Date(),
+        categoria: ECategoriaPublicacao.TESTE,
+      };
 
-    const response = await controller.create(publiDto);
-    expect(response.data).toEqual(publi);
-    expect(response.message).toEqual('Salvo com sucesso!');
+      const result = await controller.create(createPublicacaoDto);
+
+      expect(service.create).toHaveBeenCalledWith(createPublicacaoDto);
+      expect(result).toEqual(new HttpResponse(mockPublicacao).onCreated());
+    });
+
+    it('deve lançar uma BadRequestException em caso de erro no serviço', async () => {
+      const createPublicacaoDto: CreatePublicacaoDto = {
+        titulo: 'Título de Teste',
+        descricao: 'Descrição de Teste',
+        idUsuario: 1,
+        dataHora: new Date(),
+        categoria: ECategoriaPublicacao.TESTE,
+      };
+
+      jest.spyOn(service, 'create').mockRejectedValue(new BadRequestException('Erro ao criar publicação'));
+
+      await expect(controller.create(createPublicacaoDto)).rejects.toThrowError(BadRequestException);
+    });
   });
 
-  it('should find Publicacao', async () => {
-    jest
-      .spyOn(service, 'findOne')
-      .mockReturnValue(Promise.resolve(publiUsuario));
+  describe('findAll', () => {
+    it('deve retornar uma lista paginada de publicações', async () => {
+      const result = await controller.findAll({ filter: {} } as any, { limit: 10, offset: 0 } as any, { column: 'id', dir: 'ASC' } as any);
 
-    const response = await controller.findOne({ id: 1 });
-    expect(response).toEqual(publiUsuario);
+      expect(service.findAll).toHaveBeenCalledWith({}, { column: 'id', dir: 'ASC' }, { limit: 10, offset: 0 });
+      expect(result).toEqual(mockResponsePaginate);
+    });
+
+    it('deve lançar uma exceção em caso de erro no serviço', async () => {
+      jest.spyOn(service, 'findAll').mockRejectedValue(new Error('Erro ao buscar publicações'));
+
+      await expect(controller.findAll({ filter: {} } as any, { limit: 10, offset: 0 } as any, { column: 'id', dir: 'ASC' } as any)).rejects.toThrowError(Error);
+    });
   });
 
-  it('should remove Publicacao', async () => {
-    jest.spyOn(service, 'remove').mockReturnValue(Promise.resolve(publi));
+  describe('findOne', () => {
+    it('deve retornar uma publicação pelo ID', async () => {
+      const param: IdValidator = { id: 1 };
+      const result = await controller.findOne(param);
 
-    const response = await controller.remove({ id: 1 });
-    expect(response.data).toEqual(publi);
-    expect(response.message).toEqual('Excluído com sucesso!');
-  });
+      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(result).toEqual(mockPublicacao);
+    });
 
-  it('should update Publicacao', async () => {
-    jest.spyOn(service, 'update').mockReturnValue(Promise.resolve(publi));
+    it('deve lançar uma exceção em caso de erro no serviço', async () => {
+      const param: IdValidator = { id: 1 };
+      jest.spyOn(service, 'findOne').mockRejectedValue(new Error('Erro ao buscar publicação'));
 
-    const response = await controller.update({ id: 1 }, { titulo: 'titulo' });
-    expect(response.data).toEqual(publi);
-    expect(response.message).toEqual('Atualizado com sucesso!');
+      await expect(controller.findOne(param)).rejects.toThrowError(Error);
+    });
+
+    it('deve lançar NotFoundException se a publicação não for encontrada', async () => {
+      const param: IdValidator = { id: 999 };
+      jest.spyOn(service, 'findOne').mockRejectedValue(new NotFoundException('Publicação não encontrada'));
+
+      await expect(controller.findOne(param)).rejects.toThrowError(NotFoundException);
+    });
   });
 
   describe('findAll', () => {

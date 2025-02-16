@@ -54,7 +54,26 @@ describe('AutenticacaoGuard', () => {
 
   it('should pass if authentication is successful', async () => {
     jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(false);
-    mockClientProxy.send.mockReturnValue(of(true));
+    jest.spyOn(clientProxy, 'send').mockReturnValue(throwError(() => new UnauthorizedException('Usuário não autenticado!')));
+
+    const context = {
+      switchToHttp: () => ({
+        getRequest: () => ({
+          headers: {
+            authorization: 'Bearer invalid_jwt',
+          },
+        }),
+      }),
+      getHandler: jest.fn(),
+      getClass: jest.fn(),
+    } as unknown as ExecutionContext;
+
+    await expect(guard.canActivate(context)).rejects.toThrow(UnauthorizedException);
+  });
+
+  it('deve permitir acesso se o JWT for válido', async () => {
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(false);
+    jest.spyOn(clientProxy, 'send').mockReturnValue(of(true));
 
     const result = await guard.canActivate(mockContext as any);
 
