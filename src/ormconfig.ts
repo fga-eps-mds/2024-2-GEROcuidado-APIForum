@@ -12,15 +12,13 @@ for (const k in envConfig) {
   process.env[k] = envConfig[k];
 }
 
-
-
 const config: DataSourceOptions = {
   type: 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT ? +process.env.DB_PORT : 5002,
-  username: process.env.DB_USERNAME || 'postgres',
-  password: process.env.DB_PASS || 'postgres',
-  database: process.env.DB_DATABASE || 'localhost',
+  host: process.env.DB_HOST || 'gerocuidado-forum-db', // Nome do serviço no Docker Compose
+  port: process.env.DB_PORT ? +process.env.DB_PORT : 5002, // Porta interna do PostgreSQL
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASS,
+  database: process.env.DB_DATABASE || 'gerocuidado-forum-db',
   migrationsTableName: 'migrations',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: false,

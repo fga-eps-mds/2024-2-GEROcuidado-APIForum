@@ -262,4 +262,85 @@ describe('E2E - Publicacao', () => {
     await app.close();
     await client.close();
   });
+
+  describe('E2E - Comentario', () => {
+    const comentario = {
+      id: undefined,
+      texto: 'Comentário de teste',
+      idUsuario: 1,
+      idPublicacao: 1,
+      dataHora: new Date().toISOString() as any,
+    };
+
+    describe('POST - /api/comentarios/comentario', () => {
+      it('should successfully add a new "comentario"', async () => {
+        const res = await request(app.getHttpServer())
+          .post('/api/comentarios/comentario')
+          .set('Content-Type', 'application/json')
+          .send(comentario);
+
+        expect(res.statusCode).toEqual(201);
+        expect(res.body.message).toEqual('Salvo com sucesso!');
+        expect(res.body.data).toMatchObject({
+          ...comentario,
+          id: res.body.data.id,
+        });
+        Object.assign(comentario, res.body.data);
+      });
+    });
+
+    describe('GET - /api/comentarios/all', () => {
+      it('should successfully retrieve all "comentario"', async () => {
+        const res = await request(app.getHttpServer())
+          .get('/api/comentarios/all')
+          .set('Content-Type', 'application/json')
+          .send();
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.message).toBeNull();
+        expect(Array.isArray(res.body.data)).toBeTruthy();
+      });
+    });
+
+    describe('GET - /api/comentarios/:id', () => {
+      it('should successfully retrieve "comentario" by id', async () => {
+        const res = await request(app.getHttpServer())
+          .get(`/api/comentarios/${comentario.id}`)
+          .set('Content-Type', 'application/json')
+          .send();
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.data).toMatchObject(comentario);
+      });
+    });
+
+    describe('PUT - /api/comentarios/:id', () => {
+      it('should successfully update "comentario" by id', async () => {
+        const update = { texto: 'Novo texto do comentário' };
+
+        const res = await request(app.getHttpServer())
+          .put(`/api/comentarios/${comentario.id}`)
+          .set('Content-Type', 'application/json')
+          .send(update);
+
+        comentario.texto = update.texto;
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.message).toBe('Atualizado com sucesso!');
+        expect(res.body.data).toMatchObject(comentario);
+      });
+    });
+
+    describe('DELETE - /api/comentarios/:id', () => {
+      it('should successfully delete "comentario" by id', async () => {
+        const res = await request(app.getHttpServer())
+          .delete(`/api/comentarios/${comentario.id}`)
+          .set('Content-Type', 'application/json')
+          .send();
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.message).toBe('Excluído com sucesso!');
+      });
+    });
+  });
 });

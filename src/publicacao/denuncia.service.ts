@@ -1,13 +1,13 @@
 import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Denuncia } from './entities/denuncia.entity';
 import { PublicacaoService } from "../publicacao/publicacao.service";
-import { CreateDenunciaDto } from "./dto/create-denuncia.dto";
-import { UpdateDenunciaDto } from "./dto/update-denuncia.dto";
 import { Ordering } from '../shared/decorators/ordenate.decorator';
 import { Pagination } from '../shared/decorators/paginate.decorator';
 import { ResponsePaginate } from '../shared/interfaces/response-paginate.interface';
+import { CreateDenunciaDto } from "./dto/create-denuncia.dto";
+import { UpdateDenunciaDto } from "./dto/update-denuncia.dto";
+import { Denuncia } from './entities/denuncia.entity';
 
 
 @Injectable()
@@ -34,7 +34,7 @@ export class DenunciaService {
 
     const denuncia = this._repository.create({
       ...body,
-      publicacao,
+      //publicacao,
     });
 
     return this._repository.save(denuncia);
@@ -85,9 +85,9 @@ export class DenunciaService {
    * Busca todas as denúncias de uma publicação.
    * @param publicacaoId ID da publicação.
    */
-  async findByPublicacaoId(publicacaoId: number): Promise<Denuncia[]> {
-    return this._repository.find({ where: { publicacao: { id: publicacaoId } } });
-  }
+//   async findByPublicacaoId(publicacaoId: number): Promise<Denuncia[]> {
+//     return this._repository.find({ where: { publicacaoId: publicacaoId } });
+//   }
 
   /**
    * Atualiza os detalhes de uma denúncia.
