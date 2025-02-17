@@ -20,8 +20,8 @@ export class Denuncia {
   @Column('varchar', { length: 500 })
   descricao!: string;
 
-  @Column('timestamp')
-  dataHora!: Date;
+  @Column({ type: 'varchar' }) // Define explicitamente como string
+  dataHora?: string; // Tipo TypeScript: string (não String)
 
   //@ManyToOne(() => Publicacao, (publicacao) => publicacao.denuncias, {
   //  eager: true,
