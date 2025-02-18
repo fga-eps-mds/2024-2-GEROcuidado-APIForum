@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { lastValueFrom, timeout } from 'rxjs';
@@ -26,11 +26,16 @@ export class PublicacaoService {
     private readonly _repository: Repository<Publicacao>,
     @Inject('USUARIO_CLIENT')
     private readonly _client: ClientProxy,
-  ) { }
+  ) {}
 
   async create(body: CreatePublicacaoDto): Promise<Publicacao> {
-    const publicacao = new Publicacao(body);
-    return this._repository.save(publicacao);
+    try {
+      const publicacao = new Publicacao(body);
+      return await this._repository.save(publicacao);
+    } catch (error) {
+      // Lança BadRequestException em caso de erro
+      throw new BadRequestException('Erro ao criar publicação');
+    }
   }
 
   async findOne(id: number): Promise<IPublicacaoUsuario> {

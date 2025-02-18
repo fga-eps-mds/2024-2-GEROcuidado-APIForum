@@ -3,4 +3,5 @@ export enum ECategoriaPublicacao {
   ALIMENTACAO = 'Alimentação',
   EXERCICIOS = 'Exercícios',
   GERAL = 'Geral',
+  TESTE = 'Teste',
 }
