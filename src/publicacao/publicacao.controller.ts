@@ -22,7 +22,7 @@ import { IPublicacaoFilter } from './interface/publicacao-filter.interface';
 import { IPublicacaoUsuario } from './interface/publicacao-usuario.interface';
 import { PublicacaoService } from './publicacao.service';
 
-@Controller()
+@Controller('api/forum')
 export class PublicacaoController {
   constructor(private readonly _service: PublicacaoService) {}
 
